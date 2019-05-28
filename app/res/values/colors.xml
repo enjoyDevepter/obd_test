@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="title_color">#FFFFFFFF</color>
+    <color name="title_bar">#FF35BDB2</color>
+    <color name="seekbar_progress">#384653</color>
+    <color name="seekbar_textcolor_light">#FF2EA69C</color>
+    <color name="seekbar_textcolor_gray">#809398</color>
+    <color name="seekbar_textcolor_red">#FFFF0000</color>
+
+
+    <color name="title">#FF4A4A4A</color>
+    <color name="text_color">#FF4A4A4A</color>
+    <color name="main_title_color">#FF30B1A3</color>
+    <color name="hud_title_color">#FF1D1D1D</color>
+    <color name="input_buttom_color">#FFA0A0A0</color>
+    <color name="numcol">#083a38</color>
+
+
+</resources>

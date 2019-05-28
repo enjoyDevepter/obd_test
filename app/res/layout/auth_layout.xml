@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <include layout="@layout/tittle_layout" />
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="44dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/sn_01"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/input_bg"
+            android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLength="4"
+            android:nextFocusForward="@+id/sn_02"
+            android:paddingLeft="10dp"
+            android:singleLine="true"
+            android:textSize="17sp" />
+
+        <View
+            android:layout_width="15dp"
+            android:layout_height="1dp"
+            android:background="#FFBFBFBF"
+            android:gravity="center" />
+
+        <EditText
+            android:id="@+id/sn_02"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/input_bg"
+            android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLength="4"
+            android:nextFocusForward="@+id/sn_03"
+            android:paddingLeft="10dp"
+            android:singleLine="true"
+            android:textSize="17sp" />
+
+        <View
+            android:layout_width="15dp"
+            android:layout_height="1dp"
+            android:background="#FFBFBFBF"
+            android:gravity="center" />
+
+        <EditText
+            android:id="@+id/sn_03"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/input_bg"
+            android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLength="4"
+            android:nextFocusForward="@+id/sn_04"
+            android:paddingLeft="10dp"
+            android:singleLine="true"
+            android:textSize="17sp" />
+
+        <View
+            android:layout_width="15dp"
+            android:layout_height="1dp"
+            android:background="#FFBFBFBF"
+            android:gravity="center" />
+
+        <EditText
+            android:id="@+id/sn_04"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/input_bg"
+            android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLength="4"
+            android:nextFocusForward="@+id/next"
+            android:paddingLeft="10dp"
+            android:singleLine="true"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/common_margin_lr"
+        android:layout_marginRight="@dimen/common_margin_lr"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/scan"
+            android:layout_width="92dp"
+            android:layout_height="30dp"
+            android:background="@drawable/btn_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:background="@drawable/scan" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="开始扫描"
+                android:textColor="#FFFFFFFF"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="扫描二维码，自动录入"
+            android:textColor="#FF009488"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/next"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginLeft="@dimen/common_margin_lr"
+        android:layout_marginRight="@dimen/common_margin_lr"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/btn_bg"
+        android:gravity="center"
+        android:text="激活"
+        android:textColor="#FFFFFFFF"
+        android:textSize="18sp" />
+
+</LinearLayout>
