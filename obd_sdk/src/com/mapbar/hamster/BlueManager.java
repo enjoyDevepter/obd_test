@@ -919,11 +919,11 @@ public class BlueManager {
                     }
                     mHandler.sendMessage(message);
                 }
-            } else if (content[0] == 0x8A) {
+            } else if (content[0] == 0x0A) {
                 if (content[1] == 01) {
                     Message message = mHandler.obtainMessage();
                     Bundle bundle = new Bundle();
-                    bundle.putInt("type", content[2]);
+                    bundle.putInt("type", content[4]);
                     message.setData(bundle);
                     message.what = MSG_CHOICE_HUD;
                     mHandler.sendMessage(message);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -35,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements BleCallBackListen
     public boolean first = true;
     private ViewGroup rootViewGroup;
     private View splashView;
-
 
     public MainActivity() {
         if (null == MainActivity.INSTANCE) {
@@ -109,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements BleCallBackListen
         PermissionUtil.requestPermissionForInit(new PermissionUtil.RequestPermission() {
             @Override
             public void onRequestPermissionSuccess() {
-                //request permission success, do something.
                 if (isFirst()) {
                     addTasks();
                 }
@@ -135,8 +134,6 @@ public class MainActivity extends AppCompatActivity implements BleCallBackListen
 
 
     }
-
-
     @Override
     protected void onDestroy() {
         ImmersionBar.with(this).destroy(); //不调用该方法，如果界面bar发生改变，在不关闭app的情况下，退出此界面再进入将记忆最后一次bar改变的状态
