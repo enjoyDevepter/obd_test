@@ -25,5 +25,17 @@
         android:textColor="@color/seekbar_textcolor_red"
         android:textSize="30sp" />
 
-
+    <TextView
+        android:id="@+id/next"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginLeft="@dimen/common_margin_lr"
+        android:layout_marginRight="@dimen/common_margin_lr"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/btn_bg"
+        android:gravity="center"
+        android:text="开始测试"
+        android:visibility="invisible"
+        android:textColor="#FFFFFFFF"
+        android:textSize="18sp" />
 </LinearLayout>

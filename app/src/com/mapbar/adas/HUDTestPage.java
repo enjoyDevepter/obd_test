@@ -123,7 +123,7 @@ public class HUDTestPage extends AppBasePage implements BleCallBackListener {
                 Log.d("updateBoxID success " + responese);
                 try {
                     final JSONObject result = new JSONObject(responese);
-                    if ("000".equals(result.optString("status"))) {
+                    if ("000".equals(result.optString("status")) || "102".equals(result.optString("status"))) {
                         AuthPage authPage = new AuthPage();
                         Bundle bundle = new Bundle();
                         bundle.putString("boxId",boxId);

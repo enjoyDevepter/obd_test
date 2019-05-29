@@ -27,6 +27,8 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
     private TextView typeTV;
     @ViewInject(R.id.choice)
     private View choiceV;
+    @ViewInject(R.id.next)
+    private View nextV;
 
     final String[] items = {"HUD-FF", "HUD-F2", "HUD-M4", "HUD-PRO-LILY"};
     private int index;
@@ -91,6 +93,9 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
                 });
                 builder.show();
                 break;
+            case R.id.next:
+                PageManager.go(new HUDTestPage());
+                break;
             default:
                 break;
         }
@@ -103,11 +108,12 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
                 if (type == (Integer) data) {
                     typeTV.setText(items[index]);
                     // 开始测试
-                    PageManager.go(new HUDTestPage());
+                    nextV.setVisibility(View.VISIBLE);
+                    nextV.setOnClickListener(this);
                 } else {
                     // 重置
                     typeTV.setText("");
-                    Toast.makeText(ChoiceHUDTypePage.this.getContext(),"设置异常，请重新选择！",Toast.LENGTH_LONG).show();
+                    Toast.makeText(ChoiceHUDTypePage.this.getContext(), "设置异常，请重新选择！", Toast.LENGTH_LONG).show();
                 }
                 break;
             default:

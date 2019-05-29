@@ -129,7 +129,7 @@ public class BlueManager {
                 return;
             }
             scanResult.add(name);
-            if (name != null && (name.toUpperCase().startsWith("GUARDIAN") || name.toUpperCase().startsWith("MYOBD"))) {
+            if (name != null &&  name.toUpperCase().startsWith("MYOBD")) {
                 Log.d("device.getName()=    " + device.getName() + " device.getAddress()=" + device.getAddress());
                 Message msg = mHandler.obtainMessage();
                 msg.what = STOP_SCAN_AND_CONNECT;
@@ -551,7 +551,7 @@ public class BlueManager {
         if (null != data && data.length > 0) {
             if (data[0] == ProtocolUtils.PROTOCOL_HEAD_TAIL && data.length != 1 && unfinish && data.length >= 7) {
                 // 获取包长度
-                byte[] len = new byte[]{data[4], data[3]};
+                byte[] len = new byte[]{data[3], data[4]};
                 count = byteToShort(len);
                 if (data.length == count + 7) {  //为完整一包
                     full = new byte[count + 5];
@@ -593,7 +593,7 @@ public class BlueManager {
         short s = 0;
         short s0 = (short) (b[0] & 0xff);// 最低位
         short s1 = (short) (b[1] & 0xff);
-        s1 <<= 8;
+        s0 <<= 8;
         s = (short) (s0 | s1);
         return s;
     }
@@ -603,7 +603,8 @@ public class BlueManager {
      */
     private void validateAndNotify(byte[] res) {
         Log.d(" validateAndNotify");
-        if (!(res[0] == (byte) 0x09 && res[1] == 01 || res[0] == (byte) 0x08 && res[1] == 03)) {
+        if (!((res[0] == (byte) 0x09 && res[1] == 01) || (res[0] == (byte) 0x08 && res[1] == 03))) {
+            Log.d(" validateAndNotify begin next");
             timeOutThread.endCommand();
             byte[] msg = instructList.pollLast();
             canGo = true;
@@ -883,14 +884,14 @@ public class BlueManager {
                     message.what = MSG_COMMON_INFO;
                     mHandler.sendMessage(message);
                 }
-            } else if (content[0] == 0x87) {
+            } else if (content[0] == 0x07) {
                 if (content[1] == 01) {
                     Message message = mHandler.obtainMessage();
                     switch (content[4]) {
                         case 00:
                             int v = byteToShort(new byte[]{content[17], content[18]}) & 0xFFFF;
                             boolean a = false, b = false;
-                            if (v < 11500 || v > 12500) {
+                            if (v < 9000 || v > 12500) {
                                 message.what = MSG_TEST_V_ERROR;
                             } else {
                                 a = true;
