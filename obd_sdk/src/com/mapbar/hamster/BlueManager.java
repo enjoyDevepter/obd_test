@@ -129,7 +129,7 @@ public class BlueManager {
                 return;
             }
             scanResult.add(name);
-            if (name != null &&  name.toUpperCase().startsWith("MYOBD")) {
+            if (name != null && name.toUpperCase().startsWith("MYOBD")) {
                 Log.d("device.getName()=    " + device.getName() + " device.getAddress()=" + device.getAddress());
                 Message msg = mHandler.obtainMessage();
                 msg.what = STOP_SCAN_AND_CONNECT;
@@ -629,7 +629,7 @@ public class BlueManager {
             if (content[0] == 00) {
                 if (content[1] == 00) { // 通用错误
 
-                } else if (content[1] == 01) { // 获取终端状态
+                } else if (content[1] == 01 || content[1] == 02) { // 获取终端状态
                     OBDStatusInfo obdStatusInfo = new OBDStatusInfo();
                     obdStatusInfo.setBoxId(HexUtils.formatHexString(Arrays.copyOfRange(content, 12, 24)));
                     obdStatusInfo.setSn(new String(Arrays.copyOfRange(content, 24, 43)));

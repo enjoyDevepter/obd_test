@@ -96,6 +96,11 @@ public class AuthPage extends AppBasePage implements View.OnClickListener, BleCa
         }
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        BlueManager.getInstance().removeCallBackListener(this);
+    }
 
     private void check() {
 

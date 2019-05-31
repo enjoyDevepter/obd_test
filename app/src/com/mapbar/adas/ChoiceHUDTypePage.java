@@ -79,7 +79,7 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
                                 type = 0x04;
                                 break;
                             case 3: // HUD-PRO-LILY
-                                type = 0x04;
+                                type = 0x41;
                                 break;
                             case 4:
                                 break;
