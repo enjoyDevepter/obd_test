@@ -30,7 +30,7 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
     @ViewInject(R.id.next)
     private View nextV;
 
-    final String[] items = {"HUD-FF", "HUD-F2", "HUD-M4", "HUD-PRO-LILY"};
+    final String[] items = {"M2","M3","M4","F2","F3","F4","F5","F6","P3","P4","P5","P6","P7"};
     private int index;
     private int type;
 
@@ -69,21 +69,44 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
                         dialog.dismiss();
                         index = which;
                         switch (which) {
-                            case 0: // HUD-FF
-                                type = 0x22;
+                            case 0: // M2
+                                type = 0x02;
                                 break;
-                            case 1: // HUD-F2
-                                type = 0x21;
+                            case 1: // M3
+                                type = 0x03;
                                 break;
-                            case 2: // HUD-M4
+                            case 2: // M4
                                 type = 0x04;
                                 break;
-                            case 3: // HUD-PRO-LILY
-                                type = 0x41;
+                            case 3: // F2
+                                type = 0x22;
                                 break;
-                            case 4:
+                            case 4: // F3
+                                type = 0x23;
                                 break;
-                            case 5:
+                            case 5: // F4
+                                type = 0x24;
+                                break;
+                            case 6:
+                                type = 0x25;
+                                break;
+                            case 7:
+                                type = 0x26;
+                                break;
+                            case 8:
+                                type = 0x43;
+                                break;
+                            case 9:
+                                type = 0x44;
+                                break;
+                            case 10:
+                                type = 0x45;
+                                break;
+                            case 11:
+                                type = 0x46;
+                                break;
+                            case 12:
+                                type = 0x47;
                                 break;
                             default:
                                 break;
