@@ -38,6 +38,8 @@ android {
             signingConfig signingConfigs.release
         }
     }
+
+
     sourceSets { // 从ANT迁移的工程，可以使用 sourceSets 来配置工程结构.
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -53,11 +55,9 @@ android {
         }
     }
 }
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(path: ':core')
-    compile project(path: ':zxing_lib')
     compile project(path: ':obd_sdk')
     compile 'com.android.support:multidex:1.0.1'
     compile 'org.simple:androideventbus:1.0.5.1'

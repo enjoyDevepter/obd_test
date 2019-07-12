@@ -34,4 +34,7 @@
     <dimen name="physical_normal_item_height">42dp</dimen>
     <dimen name="physical_error_item_height">32dp</dimen>
 
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
 </resources>

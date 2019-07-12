@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -14,9 +13,9 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.google.zxing.client.android.CaptureActivity;
 import com.gyf.barlibrary.ImmersionBar;
 import com.mapbar.adas.utils.PermissionUtil;
+import com.mapbar.adas.zbar.CaptureActivity;
 import com.mapbar.hamster.BleCallBackListener;
 import com.mapbar.hamster.BlueManager;
 import com.mapbar.hamster.OBDEvent;
@@ -134,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements BleCallBackListen
 
 
     }
+
     @Override
     protected void onDestroy() {
         ImmersionBar.with(this).destroy(); //不调用该方法，如果界面bar发生改变，在不关闭app的情况下，退出此界面再进入将记忆最后一次bar改变的状态
@@ -186,20 +186,31 @@ public class MainActivity extends AppCompatActivity implements BleCallBackListen
         getWindow().setBackgroundDrawable(null);
     }
 
+    private static final int REQUEST_CODE_SCAN = 0x0000;// 扫描二维码
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 0) {
-            if (data != null) {
-                String result = data.getStringExtra(CaptureActivity.SCANRESULT);
-                if (result != null) {
-                    Bundle bundle = BackStackManager.getInstance().getCurrent().getDate();
-                    if (bundle == null) {
-                        bundle = new Bundle();
+        switch (requestCode) {
+            case REQUEST_CODE_SCAN:// 二维码
+                // 扫描二维码回传
+                if (resultCode == RESULT_OK) {
+                    if (data != null) {
+                        //获取扫描结果
+                        String result = data.getExtras().getString(CaptureActivity.EXTRA_STRING);
+                        if (result != null) {
+                            Bundle bundle = BackStackManager.getInstance().getCurrent().getDate();
+                            if (bundle == null) {
+                                bundle = new Bundle();
+                            }
+                            bundle.putString("sn", result);
+                            BackStackManager.getInstance().getCurrent().setDate(bundle);
+                        }
                     }
-                    bundle.putString("sn", result);
                 }
-            }
+                break;
+            default:
+                break;
         }
     }
 

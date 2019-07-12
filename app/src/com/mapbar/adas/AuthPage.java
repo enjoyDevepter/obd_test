@@ -7,11 +7,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.client.android.CaptureActivity;
 import com.mapbar.adas.anno.PageSetting;
 import com.mapbar.adas.anno.ViewInject;
 import com.mapbar.adas.utils.AlarmManager;
 import com.mapbar.adas.utils.URLUtils;
+import com.mapbar.adas.zbar.CaptureActivity;
 import com.mapbar.hamster.BleCallBackListener;
 import com.mapbar.hamster.BlueManager;
 import com.mapbar.hamster.OBDEvent;
