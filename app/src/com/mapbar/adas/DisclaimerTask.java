@@ -1,6 +1,8 @@
 package com.mapbar.adas;
 
 
+import android.os.Bundle;
+
 import com.mapbar.hamster.BlueManager;
 
 /**
@@ -18,7 +20,11 @@ public class DisclaimerTask extends BaseTask {
             }
         });
         if (BlueManager.getInstance().isConnected()) {
-            PageManager.go(new ChoiceHUDTypePage());
+            ChoiceHUDTypePage hudTypePage = new ChoiceHUDTypePage();
+            Bundle bundle = new Bundle();
+            bundle.putInt("type", AdasApplication.type);
+            hudTypePage.setDate(bundle);
+            PageManager.go(hudTypePage);
         } else {
             BlueManager.getInstance().stopScan(false);
             PageManager.go(new ConnectPage());

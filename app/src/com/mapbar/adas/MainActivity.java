@@ -218,7 +218,6 @@ public class MainActivity extends AppCompatActivity implements BleCallBackListen
     public void onEvent(int event, Object data) {
         switch (event) {
             case OBDEvent.OBD_DISCONNECTED:
-                Toast.makeText(GlobalUtil.getContext(), "OBD连接断开！", Toast.LENGTH_SHORT).show();
                 PageManager.go(new ConnectPage());
                 break;
             default:

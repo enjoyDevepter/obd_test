@@ -30,9 +30,22 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
     @ViewInject(R.id.next)
     private View nextV;
 
-    final String[] items = {"M2","M3","M4","F2","F3","F4","F5","F6","P3","P4","P5","P6","P7"};
+    final String[] items = {"M2", "M3", "M4", "F2", "F3", "F4", "F5", "F6", "P3", "P4", "P5", "P6", "P7"};
     private int index;
     private int type;
+    private boolean auto;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        BlueManager.getInstance().addBleCallBackListener(this);
+
+        type = getDate().getInt("type");
+        auto = type != 0;
+        if (auto) {
+            BlueManager.getInstance().send(ProtocolUtils.choiceHUD(type));
+        }
+    }
 
     @Override
     public void onResume() {
@@ -41,7 +54,6 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
         reportV.setVisibility(View.GONE);
         title.setText("设置HUD类型");
         choiceV.setOnClickListener(this);
-        BlueManager.getInstance().addBleCallBackListener(this);
     }
 
     @Override
@@ -111,6 +123,7 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
                             default:
                                 break;
                         }
+                        AdasApplication.type = type;
                         BlueManager.getInstance().send(ProtocolUtils.choiceHUD(type));
                     }
                 });
@@ -133,6 +146,9 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
                     // 开始测试
                     nextV.setVisibility(View.VISIBLE);
                     nextV.setOnClickListener(this);
+                    if (auto) {
+                        PageManager.go(new HUDTestPage());
+                    }
                 } else {
                     // 重置
                     typeTV.setText("");
