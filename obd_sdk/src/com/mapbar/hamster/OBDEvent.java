@@ -139,5 +139,6 @@ public class OBDEvent {
     public static final int TEST_C_ERROR = 321; // HUD传感器异常
     public static final int TEST_CAN_ERROR = 322; // HUD Can线异常
     public static final int TEST_K_ERROR = 323; // HUD K线异常
-    public static final int TEST_OK = 324; // HUD 测试正常
+    public static final int TEST_FM_ERROR = 324; // FM 设置异常
+    public static final int TEST_OK = 325; // HUD 测试正常
 }

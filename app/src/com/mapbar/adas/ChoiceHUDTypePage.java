@@ -12,6 +12,7 @@ import com.mapbar.hamster.BleCallBackListener;
 import com.mapbar.hamster.BlueManager;
 import com.mapbar.hamster.OBDEvent;
 import com.mapbar.hamster.core.ProtocolUtils;
+import com.mapbar.hamster.log.Log;
 import com.miyuan.obd.R;
 
 @PageSetting(contentViewId = R.layout.hud_type_layout, toHistory = false)
@@ -30,9 +31,10 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
     @ViewInject(R.id.next)
     private View nextV;
 
-    final String[] items = {"M2","M3","M4","F2","F3","F4","F5","F6","P3","P4","P5","P6","P7"};
+    final String[] items = {"M2", "M3", "M4", "F2", "F3", "F4", "F5", "F6", "P3", "P4", "P5", "P6", "P7"};
     private int index;
     private int type;
+    private boolean auto;
 
     @Override
     public void onResume() {
@@ -42,6 +44,12 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
         title.setText("设置HUD类型");
         choiceV.setOnClickListener(this);
         BlueManager.getInstance().addBleCallBackListener(this);
+        type = getDate().getInt("type");
+        auto = type != 0;
+        Log.d("auto  " + auto);
+        if (auto) {
+            BlueManager.getInstance().send(ProtocolUtils.choiceHUD(type));
+        }
     }
 
     @Override
@@ -133,6 +141,10 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
                     // 开始测试
                     nextV.setVisibility(View.VISIBLE);
                     nextV.setOnClickListener(this);
+                    AdasApplication.type = type;
+                    if (auto) {
+                        PageManager.go(new HUDTestPage());
+                    }
                 } else {
                     // 重置
                     typeTV.setText("");

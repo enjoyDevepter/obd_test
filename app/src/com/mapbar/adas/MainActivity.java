@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.google.zxing.client.android.CaptureActivity;
 import com.gyf.barlibrary.ImmersionBar;
@@ -134,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements BleCallBackListen
 
 
     }
+
     @Override
     protected void onDestroy() {
         ImmersionBar.with(this).destroy(); //不调用该方法，如果界面bar发生改变，在不关闭app的情况下，退出此界面再进入将记忆最后一次bar改变的状态
@@ -186,6 +185,8 @@ public class MainActivity extends AppCompatActivity implements BleCallBackListen
         getWindow().setBackgroundDrawable(null);
     }
 
+    private static final int REQUEST_CODE_SCAN = 0x0000;// 扫描二维码
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -207,7 +208,6 @@ public class MainActivity extends AppCompatActivity implements BleCallBackListen
     public void onEvent(int event, Object data) {
         switch (event) {
             case OBDEvent.OBD_DISCONNECTED:
-                Toast.makeText(GlobalUtil.getContext(), "OBD连接断开！", Toast.LENGTH_SHORT).show();
                 PageManager.go(new ConnectPage());
                 break;
             default:

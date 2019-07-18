@@ -9,6 +9,8 @@ import okhttp3.OkHttpClient;
 
 public class AdasApplication extends Application {
 
+    public static int type;
+
     public static void registerUncaughtException() {
         final Thread.UncaughtExceptionHandler defaultUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
