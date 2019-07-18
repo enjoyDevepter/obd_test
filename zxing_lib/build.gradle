@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 27
@@ -16,6 +16,6 @@ android {
 }
 
 dependencies {
-    compile 'com.google.zxing:android-core:3.3.0'
-    compile 'com.google.zxing:core:3.3.0'
+    api 'com.google.zxing:android-core:3.3.0'
+    api 'com.google.zxing:core:3.3.0'
 }

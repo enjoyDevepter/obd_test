@@ -120,6 +120,12 @@ public class HUDTestPage extends AppBasePage implements BleCallBackListener {
         GlobalUtil.getOkHttpClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                GlobalUtil.getHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        statusTV.setText("updateBoxID fail!");
+                    }
+                });
                 Log.d("updateBoxID failure " + e.getMessage());
             }
 
