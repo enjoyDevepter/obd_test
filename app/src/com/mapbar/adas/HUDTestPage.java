@@ -1,9 +1,11 @@
 package com.mapbar.adas;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.zxing.client.android.CaptureActivity;
 import com.mapbar.adas.anno.PageSetting;
 import com.mapbar.adas.anno.ViewInject;
 import com.mapbar.adas.utils.AlarmManager;
@@ -141,6 +143,8 @@ public class HUDTestPage extends AppBasePage implements BleCallBackListener {
                         bundle.putString("boxId", boxId);
                         authPage.setDate(bundle);
                         PageManager.go(authPage);
+                        Intent intent = new Intent(GlobalUtil.getMainActivity(), CaptureActivity.class);
+                        GlobalUtil.getMainActivity().startActivityForResult(intent, 0);
                     } else {
                         GlobalUtil.getHandler().post(new Runnable() {
                             @Override
