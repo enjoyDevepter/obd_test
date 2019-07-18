@@ -28,6 +28,7 @@ import okhttp3.Response;
 
 import static com.mapbar.hamster.OBDEvent.TEST_CAN_ERROR;
 import static com.mapbar.hamster.OBDEvent.TEST_C_ERROR;
+import static com.mapbar.hamster.OBDEvent.TEST_FM_ERROR;
 import static com.mapbar.hamster.OBDEvent.TEST_K_ERROR;
 import static com.mapbar.hamster.OBDEvent.TEST_OK;
 import static com.mapbar.hamster.OBDEvent.TEST_V_ERROR;
@@ -86,13 +87,18 @@ public class HUDTestPage extends AppBasePage implements BleCallBackListener {
                 AlarmManager.getInstance().play(R.raw.warm);
                 statusTV.setText("K 线通信故障");
                 break;
+            case TEST_FM_ERROR:
+                AlarmManager.getInstance().play(R.raw.warm);
+                statusTV.setText("FM 异常");
+                break;
             case TEST_OK:
-                updateBoxID(HexUtils.formatHexString((byte[])data));
+                updateBoxID(HexUtils.formatHexString((byte[]) data));
                 break;
             default:
                 break;
         }
     }
+
     private void updateBoxID(final String boxId) {
 
         JSONObject jsonObject = new JSONObject();
@@ -126,7 +132,7 @@ public class HUDTestPage extends AppBasePage implements BleCallBackListener {
                     if ("000".equals(result.optString("status")) || "102".equals(result.optString("status"))) {
                         AuthPage authPage = new AuthPage();
                         Bundle bundle = new Bundle();
-                        bundle.putString("boxId",boxId);
+                        bundle.putString("boxId", boxId);
                         authPage.setDate(bundle);
                         PageManager.go(authPage);
                     } else {

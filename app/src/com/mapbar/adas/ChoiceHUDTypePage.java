@@ -12,6 +12,7 @@ import com.mapbar.hamster.BleCallBackListener;
 import com.mapbar.hamster.BlueManager;
 import com.mapbar.hamster.OBDEvent;
 import com.mapbar.hamster.core.ProtocolUtils;
+import com.mapbar.hamster.log.Log;
 import com.miyuan.obd.R;
 
 @PageSetting(contentViewId = R.layout.hud_type_layout, toHistory = false)
@@ -36,24 +37,19 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
     private boolean auto;
 
     @Override
-    public void onStart() {
-        super.onStart();
-        BlueManager.getInstance().addBleCallBackListener(this);
-
-        type = getDate().getInt("type");
-        auto = type != 0;
-        if (auto) {
-            BlueManager.getInstance().send(ProtocolUtils.choiceHUD(type));
-        }
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         back.setVisibility(View.GONE);
         reportV.setVisibility(View.GONE);
         title.setText("设置HUD类型");
         choiceV.setOnClickListener(this);
+        BlueManager.getInstance().addBleCallBackListener(this);
+        type = getDate().getInt("type");
+        auto = type != 0;
+        Log.d("auto  " + auto);
+        if (auto) {
+            BlueManager.getInstance().send(ProtocolUtils.choiceHUD(type));
+        }
     }
 
     @Override
@@ -123,7 +119,6 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
                             default:
                                 break;
                         }
-                        AdasApplication.type = type;
                         BlueManager.getInstance().send(ProtocolUtils.choiceHUD(type));
                     }
                 });
@@ -146,6 +141,7 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
                     // 开始测试
                     nextV.setVisibility(View.VISIBLE);
                     nextV.setOnClickListener(this);
+                    AdasApplication.type = type;
                     if (auto) {
                         PageManager.go(new HUDTestPage());
                     }

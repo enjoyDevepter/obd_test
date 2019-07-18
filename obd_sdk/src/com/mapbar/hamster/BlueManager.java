@@ -78,7 +78,8 @@ public class BlueManager {
     private static final int MSG_TEST_C_ERROR = 191; // HUD传感器异常
     private static final int MSG_TEST_CAN_ERROR = 192; // HUD Can线异常
     private static final int MSG_TEST_K_ERROR = 193; // HUD K线异常
-    private static final int MSG_TEST_OK = 194; // HUD 测试正常
+    private static final int MSG_FM_ERROR = 194; // HUD FM异常
+    private static final int MSG_TEST_OK = 195; // HUD 测试正常
 
 
     private static final int MSG_VERIFY = 2;
@@ -890,7 +891,7 @@ public class BlueManager {
                     switch (content[4]) {
                         case 00:
                             int v = byteToShort(new byte[]{content[17], content[18]}) & 0xFFFF;
-                            boolean a = false, b = false;
+                            boolean a = false, b = false, c = false;
                             if (v < 9000 || v > 12500) {
                                 message.what = MSG_TEST_V_ERROR;
                             } else {
@@ -902,7 +903,13 @@ public class BlueManager {
                             } else {
                                 b = true;
                             }
-                            if (a && b) {
+                            int f = byteToShort(new byte[]{content[21], content[22]}) & 0xFFFF;
+                            if (f < 875 || f > 1080) {
+                                message.what = MSG_FM_ERROR;
+                            } else {
+                                c = true;
+                            }
+                            if (a && b && c) {
                                 Bundle bundle = new Bundle();
                                 bundle.putByteArray("boxid", Arrays.copyOfRange(content, 5, 17));
                                 message.setData(bundle);
@@ -1338,6 +1345,14 @@ public class BlueManager {
                         public void run() {
                             byte[] result = bundle.getByteArray("boxid");
                             notifyBleCallBackListener(OBDEvent.TEST_OK, result);
+                        }
+                    });
+                    break;
+                case MSG_FM_ERROR:
+                    mMainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            notifyBleCallBackListener(OBDEvent.TEST_FM_ERROR, null);
                         }
                     });
                     break;
