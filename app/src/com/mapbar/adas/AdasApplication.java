@@ -9,7 +9,7 @@ import okhttp3.OkHttpClient;
 
 public class AdasApplication extends Application {
 
-    public static int type;
+    public static int type = -1;
 
     public static void registerUncaughtException() {
         final Thread.UncaughtExceptionHandler defaultUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();

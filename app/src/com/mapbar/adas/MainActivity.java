@@ -89,6 +89,8 @@ public class MainActivity extends AppCompatActivity implements BleCallBackListen
                 .statusBarDarkFont(true)
                 .statusBarColor(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ? android.R.color.black : android.R.color.white)
                 .init(); //初始化，默认透明状态栏和黑色导航栏
+
+        BlueManager.getInstance().addBleCallBackListener(this);
     }
 
     @Override

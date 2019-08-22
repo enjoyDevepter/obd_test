@@ -45,7 +45,7 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
         choiceV.setOnClickListener(this);
         BlueManager.getInstance().addBleCallBackListener(this);
         type = getDate().getInt("type");
-        auto = type != 0;
+        auto = type != -1;
         Log.d("auto  " + auto);
         if (auto) {
             BlueManager.getInstance().send(ProtocolUtils.choiceHUD(type));
