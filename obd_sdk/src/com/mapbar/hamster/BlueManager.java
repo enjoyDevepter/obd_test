@@ -629,7 +629,12 @@ public class BlueManager {
             Log.d("content  " + HexUtils.formatHexString(content));
             if (content[0] == 00) {
                 if (content[1] == 00) { // 通用错误
-
+                    Message message = mHandler.obtainMessage();
+                    Bundle bundle = new Bundle();
+                    message.what = MSG_ERROR;
+                    bundle.putInt("status", content[0]);
+                    message.setData(bundle);
+                    mHandler.sendMessage(message);
                 } else if (content[1] == 01 || content[1] == 02) { // 获取终端状态
                     OBDStatusInfo obdStatusInfo = new OBDStatusInfo();
                     obdStatusInfo.setBoxId(HexUtils.formatHexString(Arrays.copyOfRange(content, 12, 24)));
@@ -1303,6 +1308,7 @@ public class BlueManager {
                     mMainHandler.post(new Runnable() {
                         @Override
                         public void run() {
+                            Log.d("OBDEvent.CHOICE_HUD_TYPE");
                             notifyBleCallBackListener(OBDEvent.CHOICE_HUD_TYPE, bundle.getInt("type"));
                         }
                     });
