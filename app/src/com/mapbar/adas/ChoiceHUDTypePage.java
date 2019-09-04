@@ -31,7 +31,7 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
     @ViewInject(R.id.next)
     private View nextV;
 
-    final String[] items = {"M2", "M3", "M4", "F2", "F3", "F4", "F5", "F6", "P3", "P4", "P5", "P6", "P7","T1"};
+    final String[] items = {"M2", "M3", "M4", "F2", "F3","F3-FM", "F4","F4-FM", "F5","F5-FM", "F6","F6-FM", "P3","P3-FM", "P4","P4-FM", "P5","P5-FM", "P6","P6-FM", "P7","P7-FM","T1"};
     private int index;
     private int type;
     private boolean auto;
@@ -90,33 +90,60 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
                                 type = 0x22;
                                 break;
                             case 4: // F3
+                                type = 0x13;
+                                break;
+                            case 5: // F3-FM
                                 type = 0x23;
                                 break;
-                            case 5: // F4
+                            case 6: // F4
+                                type = 0x14;
+                                break;
+                            case 7: // F4-FM
                                 type = 0x24;
                                 break;
-                            case 6:
+                            case 8: // P5
+                                type = 0x15;
+                                break;
+                            case 9: // P5-FM
                                 type = 0x25;
                                 break;
-                            case 7:
+                            case 10: // P6
+                                type = 0x16;
+                                break;
+                            case 11: // P6-FM
                                 type = 0x26;
                                 break;
-                            case 8:
+                            case 12: // P3
+                                type = 0x33;
+                                break;
+                            case 13: // P3-FM
                                 type = 0x43;
                                 break;
-                            case 9:
+                            case 14: // P4
+                                type = 0x34;
+                                break;
+                            case 15: // P4-FM
                                 type = 0x44;
                                 break;
-                            case 10:
+                            case 16: // P5
+                                type = 0x35;
+                                break;
+                            case 17: //P5-FM
                                 type = 0x45;
                                 break;
-                            case 11:
+                            case 18: // P6
+                                type = 0x36;
+                                break;
+                            case 19: // P6-FM
                                 type = 0x46;
                                 break;
-                            case 12:
+                            case 20: // P7
+                                type = 0x37;
+                                break;
+                            case 21: // P7-FM
                                 type = 0x47;
                                 break;
-                            case 13:
+                            case 22: // T1
                                 type = 0x00;
                                 break;
                             default:
