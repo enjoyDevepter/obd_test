@@ -143,8 +143,6 @@ public class HUDTestPage extends AppBasePage implements BleCallBackListener {
                         bundle.putString("boxId", boxId);
                         authPage.setDate(bundle);
                         PageManager.go(authPage);
-                        Intent intent = new Intent(GlobalUtil.getMainActivity(), CaptureActivity.class);
-                        GlobalUtil.getMainActivity().startActivityForResult(intent, 0);
                     } else {
                         GlobalUtil.getHandler().post(new Runnable() {
                             @Override

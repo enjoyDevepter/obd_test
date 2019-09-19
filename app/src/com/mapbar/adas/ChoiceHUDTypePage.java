@@ -1,8 +1,10 @@
 package com.mapbar.adas;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,14 +28,18 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
     private View reportV;
     @ViewInject(R.id.type)
     private TextView typeTV;
-    @ViewInject(R.id.choice)
-    private View choiceV;
     @ViewInject(R.id.next)
     private View nextV;
+    @ViewInject(R.id.trie)
+    private ViewGroup trieVG;
+    @ViewInject(R.id.fault)
+    private ViewGroup faultVG;
 
-    final String[] items = {"M2", "M3", "M4", "F2", "F3","F3-FM", "F4","F4-FM", "F5","F5-FM", "F6","F6-FM", "P3","P3-FM", "P4","P4-FM", "P5","P5-FM", "P6","P6-FM", "P7","P7-FM","T1"};
+    final String[] items = {"M2", "M3", "M4", "F2", "F3", "F3-FM", "F4", "F4-FM", "F5", "F5-FM", "F6", "F6-FM", "P3", "P3-FM", "P4", "P4-FM", "P5", "P5-FM", "P6", "P6-FM", "P7", "P7-FM", "T1"};
     private int index;
     private int type;
+    private boolean supportTrie;
+    private boolean supoortFault;
     private boolean auto;
 
     @Override
@@ -42,13 +48,52 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
         back.setVisibility(View.GONE);
         reportV.setVisibility(View.GONE);
         title.setText("设置HUD类型");
-        choiceV.setOnClickListener(this);
+        typeTV.setOnClickListener(this);
+        trieVG.setOnClickListener(this);
+        faultVG.setOnClickListener(this);
+        trieVG.setSelected(false);
+        faultVG.setSelected(false);
+
+        updateUI();
+
         BlueManager.getInstance().addBleCallBackListener(this);
         type = getDate().getInt("type");
         auto = (type != -1);
         Log.d("auto  " + auto);
         if (auto) {
             BlueManager.getInstance().send(ProtocolUtils.choiceHUD(type));
+        }
+    }
+
+
+    private void updateUI() {
+        TextView trieFirstTV = (TextView) trieVG.getChildAt(0);
+        TextView trieSecondTV = (TextView) trieVG.getChildAt(1);
+        TextView faultFirstTV = (TextView) faultVG.getChildAt(0);
+        TextView faultSecondTV = (TextView) faultVG.getChildAt(1);
+
+        if (trieVG.isSelected()) {
+            trieFirstTV.setTextColor(Color.parseColor("#FFFFFFFF"));
+            trieFirstTV.setBackgroundColor(Color.parseColor("#FF35BDB2"));
+            trieSecondTV.setTextColor(Color.parseColor("#FFBCBCBC"));
+            trieSecondTV.setBackgroundColor(Color.TRANSPARENT);
+        } else {
+            trieSecondTV.setTextColor(Color.parseColor("#FFFFFFFF"));
+            trieSecondTV.setBackgroundColor(Color.parseColor("#FF35BDB2"));
+            trieFirstTV.setTextColor(Color.parseColor("#FFBCBCBC"));
+            trieFirstTV.setBackgroundColor(Color.TRANSPARENT);
+        }
+
+        if (faultVG.isSelected()) {
+            faultFirstTV.setTextColor(Color.parseColor("#FFFFFFFF"));
+            faultFirstTV.setBackgroundColor(Color.parseColor("#FF35BDB2"));
+            faultSecondTV.setTextColor(Color.parseColor("#FFBCBCBC"));
+            faultSecondTV.setBackgroundColor(Color.TRANSPARENT);
+        } else {
+            faultSecondTV.setTextColor(Color.parseColor("#FFFFFFFF"));
+            faultSecondTV.setBackgroundColor(Color.parseColor("#FF35BDB2"));
+            faultFirstTV.setTextColor(Color.parseColor("#FFBCBCBC"));
+            faultFirstTV.setBackgroundColor(Color.TRANSPARENT);
         }
     }
 
@@ -67,7 +112,7 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.choice:
+            case R.id.type:
                 AlertDialog.Builder builder = new AlertDialog.Builder(ChoiceHUDTypePage.this.getContext());
                 builder.setTitle("选择HUD类型");
                 builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
@@ -156,6 +201,16 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
                 break;
             case R.id.next:
                 PageManager.go(new HUDTestPage());
+                break;
+            case R.id.trie:
+                trieVG.setSelected(!trieVG.isSelected());
+                AdasApplication.supportTrie = trieVG.isSelected();
+                updateUI();
+                break;
+            case R.id.fault:
+                faultVG.setSelected(!faultVG.isSelected());
+                AdasApplication.supportFault = faultVG.isSelected();
+                updateUI();
                 break;
             default:
                 break;
