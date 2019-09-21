@@ -1,1 +1,14 @@
-F2#F2标准版&2&true&false@F2标准版&3&true&false@F2标准版&4&true&false@F2标准版&5&true&false@F2标准版&6&true&false
+T1#T1-基础版&0&false&false
+M2#M2-基础版&2&false&false@M2-OBD汽车医生版&2&false&true@M2-豪华版(OBD+胎压)&2&true&true
+M3#M3-基础版&3&false&false@M3-OBD汽车医生版&3&false&true@M3-豪华版(OBD+胎压)&3&true&true
+M4#M4-基础版&3&false&false@M4-OBD汽车医生版&3&false&true@M4-豪华版(OBD+胎压)&3&true&true
+F2#F2-基础版&34&false&false@F2-OBD汽车医生版&34&false&true@F2-豪华版(OBD+胎压)&34&true&true
+F3#F3-基础版&19&false&false@F3-OBD汽车医生版&19&false&true@F3-豪华版(OBD+胎压)&19&true&true@F3-FM版（FM+OBD）&35&false&true@F3-至尊版（OBD+胎压+FM）&35&true&true
+F4#F4-基础版&20&false&false@F4-OBD汽车医生版&20&false&true@F4-豪华版(OBD+胎压)&20&true&true@F4-FM版（FM+OBD）&36&false&true@F4-至尊版（OBD+胎压+FM）&36&true&true
+F5#F5-基础版&21&false&false@F5-OBD汽车医生版&21&false&true@F5-豪华版(OBD+胎压)&21&true&true@F5-FM版（FM+OBD）&37&false&true@F5-至尊版（OBD+胎压+FM）&37&true&true
+F6#F6-基础版&22&false&false@F6-OBD汽车医生版&22&false&true@F6-豪华版(OBD+胎压)&22&true&true@F6-FM版（FM+OBD）&38&false&true@F6-至尊版（OBD+胎压+FM）&38&true&true
+P3#P3-基础版&51&false&false@P3-OBD汽车医生版&51&false&true@P3-豪华版(OBD+胎压)&51&true&true@P3-FM版（FM+OBD）&67&false&true@P3-至尊版（OBD+胎压+FM）&67&true&true
+P4#P4-基础版&52&false&false@P4-OBD汽车医生版&52&false&true@P4-豪华版(OBD+胎压)&52&true&true@P4-FM版（FM+OBD）&68&false&true@P4-至尊版（OBD+胎压+FM）&68&true&true
+P5#P5-基础版&53&false&false@P5-OBD汽车医生版&53&false&true@P5-豪华版(OBD+胎压)&53&true&true@P5-FM版（FM+OBD）&69&false&true@P5-至尊版（OBD+胎压+FM）&69&true&true
+P6#P6-基础版&54&false&false@P6-OBD汽车医生版&54&false&true@P6-豪华版(OBD+胎压)&54&true&true@P6-FM版（FM+OBD）&70&false&true@P6-至尊版（OBD+胎压+FM）&70&true&true
+P7#P7-基础版&55&false&false@P7-OBD汽车医生版&55&false&true@P7-豪华版(OBD+胎压)&55&true&true@P7-FM版（FM+OBD）&71&false&true@P7-至尊版（OBD+胎压+FM）&71&true&true

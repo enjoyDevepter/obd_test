@@ -107,7 +107,7 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.next:
-                BlueManager.getInstance().send(ProtocolUtils.choiceHUD(AdasApplication.currentHUDItem.getType()));
+                BlueManager.getInstance().send(ProtocolUtils.choiceHUD(currentHUDItem.getType()));
                 break;
             default:
                 break;
@@ -118,7 +118,7 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
     public void onEvent(int event, Object data) {
         switch (event) {
             case OBDEvent.CHOICE_HUD_TYPE:
-                if (AdasApplication.currentHUDItem.getType() == (Integer) data) {
+                if (currentHUDItem.getType() == (Integer) data) {
                     AdasApplication.currentHUDItem = currentHUDItem;
                     // 开始测试
                     PageManager.go(new HUDTestPage());
