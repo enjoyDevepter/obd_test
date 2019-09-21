@@ -48,6 +48,9 @@ public class AuthPage extends AppBasePage implements View.OnClickListener, BleCa
     @ViewInject(R.id.sn_04)
     private TextView sn_04;
 
+    @ViewInject(R.id.type)
+    private TextView typeTV;
+
     private String serialNumber;
 
     @Override
@@ -59,19 +62,7 @@ public class AuthPage extends AppBasePage implements View.OnClickListener, BleCa
         next.setVisibility(View.GONE);
         reportV.setOnClickListener(this);
         back.setOnClickListener(this);
-
-//        if (getDate() != null && null != getDate().get("sn")) {
-//            String sn = (String) getDate().get("sn");
-//            String[] sns = sn.split("-");
-//            if (sns.length < 4) {
-//                Toast.makeText(getContext(), "识别错误", Toast.LENGTH_LONG).show();
-//                return;
-//            }
-//            sn_01.setText(sns[0]);
-//            sn_02.setText(sns[1]);
-//            sn_03.setText(sns[2]);
-//            sn_04.setText(sns[3]);
-//        }
+        typeTV.setText(AdasApplication.currentHUDItem.getName());
         getSN();
         BlueManager.getInstance().addBleCallBackListener(this);
     }
@@ -98,8 +89,8 @@ public class AuthPage extends AppBasePage implements View.OnClickListener, BleCa
     private void getSN() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("ty_right", AdasApplication.supportTrie ? 1 : 2);
-            jsonObject.put("gc_right", AdasApplication.supportFault ? 1 : 2);
+            jsonObject.put("ty_right", AdasApplication.currentHUDItem.isSupportTire() ? 1 : 2);
+            jsonObject.put("gc_right", AdasApplication.currentHUDItem.isSupportOBD() ? 1 : 2);
         } catch (JSONException e) {
             e.printStackTrace();
         }

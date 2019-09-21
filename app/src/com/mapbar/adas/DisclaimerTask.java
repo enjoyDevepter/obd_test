@@ -20,11 +20,7 @@ public class DisclaimerTask extends BaseTask {
             }
         });
         if (BlueManager.getInstance().isConnected()) {
-            ChoiceHUDTypePage hudTypePage = new ChoiceHUDTypePage();
-            Bundle bundle = new Bundle();
-            bundle.putInt("type", AdasApplication.type);
-            hudTypePage.setDate(bundle);
-            PageManager.go(hudTypePage);
+            PageManager.go(new ChoiceHUDTypePage());
         } else {
             BlueManager.getInstance().stopScan(false);
             PageManager.go(new ConnectPage());

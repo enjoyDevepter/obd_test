@@ -8,9 +8,18 @@
 
     <include layout="@layout/tittle_layout" />
 
+    <TextView
+        android:id="@+id/type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:textSize="28sp" />
+
     <LinearLayout
         android:layout_width="300dp"
         android:layout_height="44dp"
+        android:layout_marginTop="20dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -24,6 +33,7 @@
             android:imeOptions="actionNext"
             android:inputType="text"
             android:maxLength="4"
+            android:gravity="center"
             android:nextFocusForward="@+id/sn_02"
             android:paddingLeft="10dp"
             android:singleLine="true"
@@ -40,6 +50,7 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
+            android:gravity="center"
             android:background="@drawable/input_bg"
             android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:imeOptions="actionNext"
@@ -61,6 +72,7 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
+            android:gravity="center"
             android:background="@drawable/input_bg"
             android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:imeOptions="actionNext"
@@ -82,6 +94,7 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
+            android:gravity="center"
             android:background="@drawable/input_bg"
             android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:imeOptions="actionNext"

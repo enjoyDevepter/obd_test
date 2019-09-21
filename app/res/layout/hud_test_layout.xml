@@ -7,12 +7,21 @@
 
     <include layout="@layout/tittle_layout" />
 
+
+    <TextView
+        android:id="@+id/type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:textSize="28sp" />
+
     <TextView
         android:id="@+id/status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="70dp"
         android:text="正在测试"
         android:textColor="@color/seekbar_textcolor_red"
         android:textSize="30sp" />

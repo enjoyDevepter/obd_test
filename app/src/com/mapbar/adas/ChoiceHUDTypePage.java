@@ -1,10 +1,7 @@
 package com.mapbar.adas;
 
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,8 +14,14 @@ import com.mapbar.hamster.core.ProtocolUtils;
 import com.mapbar.hamster.log.Log;
 import com.miyuan.obd.R;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
 @PageSetting(contentViewId = R.layout.hud_type_layout, toHistory = false)
-public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListener, BleCallBackListener {
+public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListener, BleCallBackListener, ExpandableListView.OnGroupExpandListener, ExpandableListView.OnChildClickListener {
 
     @ViewInject(R.id.title)
     private TextView title;
@@ -26,20 +29,13 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
     private View back;
     @ViewInject(R.id.report)
     private View reportV;
-    @ViewInject(R.id.type)
-    private TextView typeTV;
     @ViewInject(R.id.next)
     private View nextV;
-    @ViewInject(R.id.trie)
-    private ViewGroup trieVG;
-    @ViewInject(R.id.fault)
-    private ViewGroup faultVG;
+    @ViewInject(R.id.expandablelistView)
+    private ExpandableListView groupLV;
 
-    final String[] items = {"M2", "M3", "M4", "F2", "F3", "F3-FM", "F4", "F4-FM", "F5", "F5-FM", "F6", "F6-FM", "P3", "P3-FM", "P4", "P4-FM", "P5", "P5-FM", "P6", "P6-FM", "P7", "P7-FM", "T1"};
-    private int index;
-    private int type;
-    private boolean supportTrie;
-    private boolean supoortFault;
+    private HUDTypeExpandableListAdapter hudTypeExpandableListAdapter;
+
     private boolean auto;
 
     @Override
@@ -47,53 +43,51 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
         super.onResume();
         back.setVisibility(View.GONE);
         reportV.setVisibility(View.GONE);
+        nextV.setOnClickListener(this);
         title.setText("设置HUD类型");
-        typeTV.setOnClickListener(this);
-        trieVG.setOnClickListener(this);
-        faultVG.setOnClickListener(this);
-        trieVG.setSelected(false);
-        faultVG.setSelected(false);
-
-        updateUI();
 
         BlueManager.getInstance().addBleCallBackListener(this);
-        type = getDate().getInt("type");
-        auto = (type != -1);
+        auto = AdasApplication.currentHUDItem != null;
         Log.d("auto  " + auto);
         if (auto) {
-            BlueManager.getInstance().send(ProtocolUtils.choiceHUD(type));
+            BlueManager.getInstance().send(ProtocolUtils.choiceHUD(AdasApplication.currentHUDItem.getType()));
         }
+
+        initData();
+        hudTypeExpandableListAdapter = new HUDTypeExpandableListAdapter(AdasApplication.hudInfos);
+        groupLV.setAdapter(hudTypeExpandableListAdapter);
+        groupLV.setOnGroupExpandListener(this);
+        groupLV.setOnChildClickListener(this);
     }
 
 
-    private void updateUI() {
-        TextView trieFirstTV = (TextView) trieVG.getChildAt(0);
-        TextView trieSecondTV = (TextView) trieVG.getChildAt(1);
-        TextView faultFirstTV = (TextView) faultVG.getChildAt(0);
-        TextView faultSecondTV = (TextView) faultVG.getChildAt(1);
-
-        if (trieVG.isSelected()) {
-            trieFirstTV.setTextColor(Color.parseColor("#FFFFFFFF"));
-            trieFirstTV.setBackgroundColor(Color.parseColor("#FF35BDB2"));
-            trieSecondTV.setTextColor(Color.parseColor("#FFBCBCBC"));
-            trieSecondTV.setBackgroundColor(Color.TRANSPARENT);
-        } else {
-            trieSecondTV.setTextColor(Color.parseColor("#FFFFFFFF"));
-            trieSecondTV.setBackgroundColor(Color.parseColor("#FF35BDB2"));
-            trieFirstTV.setTextColor(Color.parseColor("#FFBCBCBC"));
-            trieFirstTV.setBackgroundColor(Color.TRANSPARENT);
+    private void initData() {
+        if (AdasApplication.hudInfos.size()>0) {
+            return;
         }
-
-        if (faultVG.isSelected()) {
-            faultFirstTV.setTextColor(Color.parseColor("#FFFFFFFF"));
-            faultFirstTV.setBackgroundColor(Color.parseColor("#FF35BDB2"));
-            faultSecondTV.setTextColor(Color.parseColor("#FFBCBCBC"));
-            faultSecondTV.setBackgroundColor(Color.TRANSPARENT);
-        } else {
-            faultSecondTV.setTextColor(Color.parseColor("#FFFFFFFF"));
-            faultSecondTV.setBackgroundColor(Color.parseColor("#FF35BDB2"));
-            faultFirstTV.setTextColor(Color.parseColor("#FFBCBCBC"));
-            faultFirstTV.setBackgroundColor(Color.TRANSPARENT);
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(GlobalUtil.getContext().getAssets().open("hudinfos")));
+            String tempS = "";
+            while ((tempS = br.readLine()) != null) {
+                HUDInfo info = new HUDInfo();
+                String[] type = tempS.split("#");
+                info.setType(type[0]);
+                String[] itemStr = type[1].split("@");
+                List<HUDInfo.HUDItem> items = new ArrayList<>();
+                for (int i = 0; i < itemStr.length; i++) {
+                    HUDInfo.HUDItem item = new HUDInfo.HUDItem();
+                    String[] temp = itemStr[i].split("&");
+                    item.setName(temp[0]);
+                    item.setType(Integer.valueOf(temp[1]));
+                    item.setSupportTire(Boolean.valueOf(temp[2]));
+                    item.setSupportOBD(Boolean.valueOf(temp[3]));
+                    items.add(item);
+                    info.setHudItems(items);
+                }
+                AdasApplication.hudInfos.add(info);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -112,105 +106,8 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.type:
-                AlertDialog.Builder builder = new AlertDialog.Builder(ChoiceHUDTypePage.this.getContext());
-                builder.setTitle("选择HUD类型");
-                builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        index = which;
-                        switch (which) {
-                            case 0: // M2
-                                type = 0x02;
-                                break;
-                            case 1: // M3
-                                type = 0x03;
-                                break;
-                            case 2: // M4
-                                type = 0x04;
-                                break;
-                            case 3: // F2
-                                type = 0x22;
-                                break;
-                            case 4: // F3
-                                type = 0x13;
-                                break;
-                            case 5: // F3-FM
-                                type = 0x23;
-                                break;
-                            case 6: // F4
-                                type = 0x14;
-                                break;
-                            case 7: // F4-FM
-                                type = 0x24;
-                                break;
-                            case 8: // P5
-                                type = 0x15;
-                                break;
-                            case 9: // P5-FM
-                                type = 0x25;
-                                break;
-                            case 10: // P6
-                                type = 0x16;
-                                break;
-                            case 11: // P6-FM
-                                type = 0x26;
-                                break;
-                            case 12: // P3
-                                type = 0x33;
-                                break;
-                            case 13: // P3-FM
-                                type = 0x43;
-                                break;
-                            case 14: // P4
-                                type = 0x34;
-                                break;
-                            case 15: // P4-FM
-                                type = 0x44;
-                                break;
-                            case 16: // P5
-                                type = 0x35;
-                                break;
-                            case 17: //P5-FM
-                                type = 0x45;
-                                break;
-                            case 18: // P6
-                                type = 0x36;
-                                break;
-                            case 19: // P6-FM
-                                type = 0x46;
-                                break;
-                            case 20: // P7
-                                type = 0x37;
-                                break;
-                            case 21: // P7-FM
-                                type = 0x47;
-                                break;
-                            case 22: // T1
-                                type = 0x00;
-                                break;
-                            default:
-                                break;
-                        }
-                        BlueManager.getInstance().send(ProtocolUtils.choiceHUD(type));
-                    }
-                });
-                builder.show();
-                break;
             case R.id.next:
-                PageManager.go(new HUDTestPage());
-                break;
-            case R.id.trie:
-                trieVG.setSelected(!trieVG.isSelected());
-                AdasApplication.supportTrie = trieVG.isSelected();
-                updateUI();
-                break;
-            case R.id.fault:
-                faultVG.setSelected(!faultVG.isSelected());
-                AdasApplication.supportFault = faultVG.isSelected();
-                updateUI();
+                BlueManager.getInstance().send(ProtocolUtils.choiceHUD(AdasApplication.currentHUDItem.getType()));
                 break;
             default:
                 break;
@@ -221,23 +118,45 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
     public void onEvent(int event, Object data) {
         switch (event) {
             case OBDEvent.CHOICE_HUD_TYPE:
-                if (type == (Integer) data) {
-                    typeTV.setText(items[index]);
+                if (AdasApplication.currentHUDItem.getType() == (Integer) data) {
+                    AdasApplication.currentHUDItem = currentHUDItem;
                     // 开始测试
-                    nextV.setVisibility(View.VISIBLE);
-                    nextV.setOnClickListener(this);
-                    AdasApplication.type = type;
-                    if (auto) {
-                        PageManager.go(new HUDTestPage());
-                    }
+                    PageManager.go(new HUDTestPage());
                 } else {
                     // 重置
-                    typeTV.setText("");
                     Toast.makeText(ChoiceHUDTypePage.this.getContext(), "设置异常，请重新选择！", Toast.LENGTH_LONG).show();
                 }
                 break;
             default:
                 break;
         }
+    }
+
+
+    @Override
+    public void onGroupExpand(int groupPosition) {
+        if (groupLV == null) return;
+        for (int i = 0; i < hudTypeExpandableListAdapter.getGroupCount(); i++) {
+            if (i != groupPosition) {
+                groupLV.collapseGroup(i);
+            }
+        }
+    }
+
+    HUDInfo.HUDItem currentHUDItem;
+    @Override
+    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+        HUDInfo hudInfo = (HUDInfo) hudTypeExpandableListAdapter.getGroup(groupPosition);
+        HUDInfo.HUDItem hudItem = hudInfo.getHudItems().get(childPosition);
+        hudItem.setChoice(!hudItem.isChoice());
+        for (HUDInfo.HUDItem item : hudInfo.getHudItems()) {
+            if (item != hudItem) {
+                item.setChoice(false);
+            }
+        }
+        currentHUDItem = hudItem;
+        hudTypeExpandableListAdapter.notifyDataSetChanged();
+        nextV.setVisibility(View.VISIBLE);
+        return true;
     }
 }

@@ -1,11 +1,9 @@
 package com.mapbar.adas;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.zxing.client.android.CaptureActivity;
 import com.mapbar.adas.anno.PageSetting;
 import com.mapbar.adas.anno.ViewInject;
 import com.mapbar.adas.utils.AlarmManager;
@@ -46,6 +44,8 @@ public class HUDTestPage extends AppBasePage implements BleCallBackListener {
     private View reportV;
     @ViewInject(R.id.status)
     private TextView statusTV;
+    @ViewInject(R.id.type)
+    private TextView typeTV;
 
     @Override
     public void onResume() {
@@ -53,6 +53,7 @@ public class HUDTestPage extends AppBasePage implements BleCallBackListener {
         back.setVisibility(View.GONE);
         reportV.setVisibility(View.GONE);
         title.setText("测试");
+        typeTV.setText(AdasApplication.currentHUDItem.getName());
         BlueManager.getInstance().send(ProtocolUtils.getTest());
         BlueManager.getInstance().addBleCallBackListener(this);
     }

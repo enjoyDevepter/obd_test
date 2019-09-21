@@ -7,136 +7,20 @@
 
     <include layout="@layout/tittle_layout" />
 
-    <LinearLayout
+    <ExpandableListView
+        android:id="@+id/expandablelistView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="15dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/choice"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="20dp"
-            android:layout_weight="1"
-            android:text="HUD类型"
-            android:textAlignment="textEnd"
-            android:textSize="25sp" />
-
-        <TextView
-            android:id="@+id/type"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:text="请选择类型"
-            android:textColor="@color/seekbar_textcolor_red"
-            android:textSize="30sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="15dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="20dp"
-            android:layout_weight="1"
-            android:text="是否支持胎压"
-            android:textAlignment="textEnd"
-            android:textSize="25sp" />
-
-        <LinearLayout
-            android:id="@+id/trie"
-            android:layout_width="0dp"
-            android:layout_height="26dp"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:background="@drawable/setting_item_switch_bg"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#FF35BDB2"
-                android:gravity="center"
-                android:text="开启"
-                android:textColor="#FFFFFFFF"
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="关闭"
-                android:textColor="#FFBCBCBC"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="15dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="20dp"
-            android:layout_weight="1"
-            android:text="是否支持体检"
-            android:textAlignment="textEnd"
-            android:textSize="25sp" />
-
-        <LinearLayout
-            android:id="@+id/fault"
-            android:layout_width="0dp"
-            android:layout_height="26dp"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:background="@drawable/setting_item_switch_bg"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#FF35BDB2"
-                android:gravity="center"
-                android:text="开启"
-                android:textColor="#FFFFFFFF"
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="关闭"
-                android:textColor="#FFBCBCBC"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-    </LinearLayout>
+        android:layout_weight="1"
+        android:background="#ffffff"
+        android:cacheColorHint="#00000000"
+        android:groupIndicator="@null"
+        android:childDivider="@android:color/transparent"
+        android:listSelector="#00000000"
+        android:scrollbars="none" />
 
 
     <TextView
@@ -144,8 +28,9 @@
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:layout_marginLeft="@dimen/common_margin_lr"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="@dimen/common_margin_lr"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/btn_bg"
         android:gravity="center"
         android:text="开始测试"

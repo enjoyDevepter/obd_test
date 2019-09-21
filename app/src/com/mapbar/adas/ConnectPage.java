@@ -90,11 +90,7 @@ public class ConnectPage extends AppBasePage implements View.OnClickListener, Bl
                 break;
             case OBDEvent.BLUE_CONNECTED:
                 Log.d("OBDEvent.BLUE_CONNECTED");
-                ChoiceHUDTypePage hudTypePage = new ChoiceHUDTypePage();
-                Bundle bundle = new Bundle();
-                bundle.putInt("type", AdasApplication.type);
-                hudTypePage.setDate(bundle);
-                PageManager.go(hudTypePage);
+                PageManager.go(new ChoiceHUDTypePage());
                 break;
             default:
                 break;
