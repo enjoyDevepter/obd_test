@@ -124,6 +124,7 @@ public class AuthPage extends AppBasePage implements View.OnClickListener, BleCa
                             });
                             return;
                         }
+                        serialNumber = serial_number;
                         GlobalUtil.getHandler().post(new Runnable() {
                             @Override
                             public void run() {

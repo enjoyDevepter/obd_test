@@ -50,6 +50,7 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
         auto = AdasApplication.currentHUDItem != null;
         Log.d("auto  " + auto);
         if (auto) {
+            currentHUDItem = AdasApplication.currentHUDItem;
             BlueManager.getInstance().send(ProtocolUtils.choiceHUD(AdasApplication.currentHUDItem.getType()));
         }
 

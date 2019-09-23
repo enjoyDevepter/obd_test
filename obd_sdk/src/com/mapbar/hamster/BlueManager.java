@@ -130,7 +130,7 @@ public class BlueManager {
                 return;
             }
             scanResult.add(name);
-            if ((name != null && name.toUpperCase().startsWith("MYOBD"))||(name != null && name.toUpperCase().startsWith("GUARDIAN"))) {
+            if ((name != null && name.toUpperCase().startsWith("MYOBD")) || (name != null && name.toUpperCase().startsWith("GUARDIAN"))) {
                 Log.d("device.getName()=    " + device.getName() + " device.getAddress()=" + device.getAddress());
                 Message msg = mHandler.obtainMessage();
                 msg.what = STOP_SCAN_AND_CONNECT;
@@ -897,7 +897,7 @@ public class BlueManager {
                         case 00:
                             int v = byteToShort(new byte[]{content[17], content[18]}) & 0xFFFF;
                             boolean a = false, b = false, c = false;
-                            if (v < 9000 || v > 12500) {
+                            if (v == 0) {
                                 message.what = MSG_TEST_V_ERROR;
                             } else {
                                 a = true;
