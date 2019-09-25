@@ -91,6 +91,7 @@ public class AuthPage extends AppBasePage implements View.OnClickListener, BleCa
         try {
             jsonObject.put("ty_right", AdasApplication.currentHUDItem.isSupportTire() ? 1 : 2);
             jsonObject.put("gc_right", AdasApplication.currentHUDItem.isSupportOBD() ? 1 : 2);
+            jsonObject.put("boxId", getDate().getString("boxId"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -189,6 +190,7 @@ public class AuthPage extends AppBasePage implements View.OnClickListener, BleCa
                             @Override
                             public void run() {
                                 next.setEnabled(true);
+                                AlarmManager.getInstance().play(R.raw.warm);
                                 Toast.makeText(GlobalUtil.getContext(), result.optString("message"), Toast.LENGTH_LONG).show();
                             }
                         });
