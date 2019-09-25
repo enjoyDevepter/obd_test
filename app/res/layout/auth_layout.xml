@@ -16,14 +16,24 @@
         android:textSize="@dimen/title_text_size"
         android:textStyle="bold" />
 
+    <View
+        android:id="@+id/status"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/check_status_bg" />
+
     <TextView
-        android:id="@+id/type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:textSize="28sp" />
-
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="25dp"
+        android:gravity="left"
+        android:lineSpacingExtra="4dp"
+        android:text="正在恢复出厂设置，请不要关闭手机APP"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size" />
 
 
     <TextView

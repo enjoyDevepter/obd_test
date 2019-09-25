@@ -141,4 +141,5 @@ public class OBDEvent {
     public static final int TEST_K_ERROR = 323; // HUD K线异常
     public static final int TEST_FM_ERROR = 324; // FM 设置异常
     public static final int TEST_OK = 325; // HUD 测试正常
+    public static final int RESET = 330; // 恢复出厂设置
 }

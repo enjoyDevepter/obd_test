@@ -1,6 +1,7 @@
 package com.mapbar.adas;
 
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.AnimationDrawable;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,6 +13,7 @@ import com.mapbar.adas.utils.URLUtils;
 import com.mapbar.hamster.BleCallBackListener;
 import com.mapbar.hamster.BlueManager;
 import com.mapbar.hamster.OBDEvent;
+import com.mapbar.hamster.OBDStatusInfo;
 import com.mapbar.hamster.core.ProtocolUtils;
 import com.mapbar.hamster.log.Log;
 import com.miyuan.obd.R;
@@ -33,12 +35,19 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
 
     @ViewInject(R.id.reset)
     private TextView resetTV;
+    @ViewInject(R.id.status)
+    private View statusV;
+    private AnimationDrawable animationDrawable;
+
 
     @Override
     public void onResume() {
         super.onResume();
         MainActivity.getInstance().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         resetTV.setOnClickListener(this);
+        statusV.setBackgroundResource(R.drawable.check_status_bg);
+        animationDrawable = (AnimationDrawable) statusV.getBackground();
+        animationDrawable.start();
         BlueManager.getInstance().addBleCallBackListener(this);
     }
 
@@ -46,7 +55,7 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.reset:
-                getSN();
+                BlueManager.getInstance().send(ProtocolUtils.getOBDStatus(System.currentTimeMillis()));
                 break;
         }
     }
@@ -54,28 +63,31 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
     @Override
     public void onStop() {
         super.onStop();
+        if (animationDrawable.isRunning()) {
+            animationDrawable.stop();
+        }
         BlueManager.getInstance().removeCallBackListener(this);
     }
 
 
-    private void check(final String serialNumber) {
+    private void reset(OBDStatusInfo obdStatusInfo) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("serialNumber", serialNumber);
-            jsonObject.put("boxId", getDate().getString("boxId"));
+            jsonObject.put("serialNumber", obdStatusInfo.getSn());
+            jsonObject.put("boxId", obdStatusInfo.getBoxId());
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.d("check sn input " + jsonObject.toString());
+        Log.d("reset input " + jsonObject.toString());
 
         RequestBody requestBody = new FormBody.Builder().add("params", GlobalUtil.encrypt(jsonObject.toString())).build();
         Request request = new Request.Builder()
                 .addHeader("content-type", "application/json;charset:utf-8")
-                .url(URLUtils.ACTIVATE).post(requestBody).build();
+                .url(URLUtils.RESET).post(requestBody).build();
         GlobalUtil.getOkHttpClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.d("sn_check failure " + e.getMessage());
+                Log.d("reset failure " + e.getMessage());
             }
 
             @Override
@@ -85,15 +97,16 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
                 try {
                     final JSONObject result = new JSONObject(responese);
                     if ("000".equals(result.optString("status"))) {
-                        // 激活成功
-                        String code = result.optString("rightStr");
-                        BlueManager.getInstance().send(ProtocolUtils.auth(serialNumber, code));
+                        String code = result.optString("state");
+                        if ("1".equals(code)) {
+                            BlueManager.getInstance().send(ProtocolUtils.reset());
+                        } else {
+
+                        }
                     } else {
                         GlobalUtil.getHandler().post(new Runnable() {
                             @Override
                             public void run() {
-                                next.setEnabled(true);
-                                AlarmManager.getInstance().play(R.raw.warm);
                                 Toast.makeText(GlobalUtil.getContext(), result.optString("message"), Toast.LENGTH_LONG).show();
                             }
                         });
@@ -113,9 +126,16 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
             case OBDEvent.AUTHORIZATION: //未授权或者授权过期
                 break;
             case OBDEvent.AUTHORIZATION_SUCCESS:
+                reset((OBDStatusInfo) data);
                 break;
             case OBDEvent.AUTHORIZATION_FAIL:
             case OBDEvent.NO_PARAM: // 无参数
+                break;
+            case OBDEvent.RESET:
+                if (animationDrawable.isRunning()) {
+                    animationDrawable.stop();
+                }
+                AlarmManager.getInstance().play(R.raw.reset);
                 break;
             default:
                 break;

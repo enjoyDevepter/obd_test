@@ -80,6 +80,7 @@ public class BlueManager {
     private static final int MSG_TEST_K_ERROR = 193; // HUD K线异常
     private static final int MSG_FM_ERROR = 194; // HUD FM异常
     private static final int MSG_TEST_OK = 195; // HUD 测试正常
+    private static final int MSG_RESET = 200; // 重置
 
 
     private static final int MSG_VERIFY = 2;
@@ -868,6 +869,14 @@ public class BlueManager {
                         mHandler.sendMessage(message);
                     }
                 }
+            } else if(content[0]==0x06){
+                if(content[1] == 0x12){
+                    Message message = mHandler.obtainMessage();
+                    Bundle bundle = new Bundle();
+                    message.what = MSG_RESET;
+                    message.setData(bundle);
+                    mHandler.sendMessage(message);
+                }
             } else if (content[0] == 9) {
                 if (content[1] == 01) { // 采集数据
                     Message message = mHandler.obtainMessage();
@@ -1359,6 +1368,14 @@ public class BlueManager {
                         @Override
                         public void run() {
                             notifyBleCallBackListener(OBDEvent.TEST_FM_ERROR, null);
+                        }
+                    });
+                    break;
+                case MSG_RESET:
+                    mMainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            notifyBleCallBackListener(OBDEvent.RESET, null);
                         }
                     });
                     break;

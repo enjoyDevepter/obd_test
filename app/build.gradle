@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
     defaultConfig {
-        applicationId "com.miyuan.obd.test"
+        applicationId "com.miyuan.obd.reset"
         minSdkVersion 18
         targetSdkVersion 27
         versionCode 1000
@@ -57,7 +57,6 @@ android {
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     api project(path: ':core')
-    api project(path: ':zxing_lib')
     api project(path: ':obd_sdk')
     api 'com.android.support:multidex:1.0.1'
     api 'org.simple:androideventbus:1.0.5.1'
