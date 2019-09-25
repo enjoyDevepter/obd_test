@@ -26,6 +26,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.mapbar.adas.utils.URLUtils.UPDATEBOXID;
 import static com.mapbar.hamster.OBDEvent.TEST_CAN_ERROR;
 import static com.mapbar.hamster.OBDEvent.TEST_C_ERROR;
 import static com.mapbar.hamster.OBDEvent.TEST_FM_ERROR;
@@ -116,7 +117,7 @@ public class HUDTestPage extends AppBasePage implements BleCallBackListener {
         RequestBody requestBody = new FormBody.Builder()
                 .add("params", GlobalUtil.encrypt(jsonObject.toString())).build();
         Request request = new Request.Builder()
-                .url("http://47.92.101.179:8020/service/box/add")
+                .url(UPDATEBOXID)
                 .addHeader("content-type", "application/json;charset:utf-8")
                 .post(requestBody)
                 .build();

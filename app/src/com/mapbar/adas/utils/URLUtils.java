@@ -10,5 +10,6 @@ public class URLUtils {
     public static final String HOST = BuildConfig.HOST;
     public static final String ACTIVATE = HOST + "service/lisense/activationT";
     public static final String GETSN = HOST + "service/lisense/getSN";
+    public static final String UPDATEBOXID = HOST + "service/box/add";
     public static final String ACTIVATE_SUCCESS = HOST + "service/lisense/activationResult";
 }
