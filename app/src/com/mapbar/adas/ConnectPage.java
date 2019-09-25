@@ -1,7 +1,6 @@
 package com.mapbar.adas;
 
 import android.graphics.drawable.AnimationDrawable;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
@@ -90,7 +89,7 @@ public class ConnectPage extends AppBasePage implements View.OnClickListener, Bl
                 break;
             case OBDEvent.BLUE_CONNECTED:
                 Log.d("OBDEvent.BLUE_CONNECTED");
-                PageManager.go(new ChoiceHUDTypePage());
+                PageManager.go(new ResetPage());
                 break;
             default:
                 break;

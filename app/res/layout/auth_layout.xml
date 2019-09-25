@@ -6,7 +6,15 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <include layout="@layout/tittle_layout" />
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="恢复出厂设置"
+        android:textColor="@color/title"
+        android:textSize="@dimen/title_text_size"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/type"
@@ -16,107 +24,18 @@
         android:layout_marginTop="30dp"
         android:textSize="28sp" />
 
-    <LinearLayout
-        android:layout_width="300dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="20dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/sn_01"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:background="@drawable/input_bg"
-            android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            android:imeOptions="actionNext"
-            android:inputType="text"
-            android:maxLength="4"
-            android:gravity="center"
-            android:nextFocusForward="@+id/sn_02"
-            android:paddingLeft="10dp"
-            android:singleLine="true"
-            android:textSize="17sp" />
-
-        <View
-            android:layout_width="15dp"
-            android:layout_height="1dp"
-            android:background="#FFBFBFBF"
-            android:gravity="center" />
-
-        <TextView
-            android:id="@+id/sn_02"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:background="@drawable/input_bg"
-            android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            android:imeOptions="actionNext"
-            android:inputType="text"
-            android:maxLength="4"
-            android:nextFocusForward="@+id/sn_03"
-            android:paddingLeft="10dp"
-            android:singleLine="true"
-            android:textSize="17sp" />
-
-        <View
-            android:layout_width="15dp"
-            android:layout_height="1dp"
-            android:background="#FFBFBFBF"
-            android:gravity="center" />
-
-        <TextView
-            android:id="@+id/sn_03"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:background="@drawable/input_bg"
-            android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            android:imeOptions="actionNext"
-            android:inputType="text"
-            android:maxLength="4"
-            android:nextFocusForward="@+id/sn_04"
-            android:paddingLeft="10dp"
-            android:singleLine="true"
-            android:textSize="17sp" />
-
-        <View
-            android:layout_width="15dp"
-            android:layout_height="1dp"
-            android:background="#FFBFBFBF"
-            android:gravity="center" />
-
-        <TextView
-            android:id="@+id/sn_04"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:background="@drawable/input_bg"
-            android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            android:imeOptions="actionNext"
-            android:inputType="text"
-            android:maxLength="4"
-            android:nextFocusForward="@+id/next"
-            android:paddingLeft="10dp"
-            android:singleLine="true"
-            android:textSize="17sp" />
-    </LinearLayout>
 
 
     <TextView
-        android:id="@+id/next"
+        android:id="@+id/reset"
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:layout_marginLeft="@dimen/common_margin_lr"
-        android:layout_marginRight="@dimen/common_margin_lr"
         android:layout_marginTop="80dp"
+        android:layout_marginRight="@dimen/common_margin_lr"
         android:background="@drawable/btn_bg"
         android:gravity="center"
-        android:text="激活"
+        android:text="恢复出厂设置"
         android:textColor="#FFFFFFFF"
         android:textSize="18sp" />
 

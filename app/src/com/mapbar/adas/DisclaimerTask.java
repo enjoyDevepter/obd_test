@@ -1,8 +1,6 @@
 package com.mapbar.adas;
 
 
-import android.os.Bundle;
-
 import com.mapbar.hamster.BlueManager;
 
 /**
