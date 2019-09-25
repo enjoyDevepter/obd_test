@@ -9,8 +9,18 @@ android {
         targetSdkVersion 27
         versionCode 1000
         versionName "1.0"
+        flavorDimensions "default"
     }
 
+    productFlavors {
+        inside {
+            buildConfigField 'String', "HOST", '"http://47.92.101.179:8020/"'
+        }
+
+        formal {
+            buildConfigField 'String', "HOST", '"http://box.1668288.com/"'
+        }
+    }
 
     signingConfigs {
         release {
@@ -52,7 +62,20 @@ android {
 //            jni.srcDirs=['jni']
         }
     }
+    applicationVariants.all { variant ->
+        if (variant.buildType.name != "debug") {
+            variant.getPackageApplicationProvider().get().outputDirectory = new File(project.rootDir.absolutePath + "/release")
+        }
+        variant.getPackageApplicationProvider().get().outputScope.apkDatas.forEach { apkData ->
+            apkData.outputFileName =
+                    variant.flavorName + "_" + "test_for_agent_" +
+                    ".apk"
+        }
+    }
 }
+
+
+
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
