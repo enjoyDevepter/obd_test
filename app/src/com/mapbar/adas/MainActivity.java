@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
-import com.google.zxing.client.android.CaptureActivity;
 import com.gyf.barlibrary.ImmersionBar;
 import com.mapbar.adas.utils.PermissionUtil;
 import com.mapbar.hamster.BleCallBackListener;
@@ -185,25 +184,6 @@ public class MainActivity extends AppCompatActivity implements BleCallBackListen
             splashView = null;
         }
         getWindow().setBackgroundDrawable(null);
-    }
-
-    private static final int REQUEST_CODE_SCAN = 0x0000;// 扫描二维码
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 0) {
-            if (data != null) {
-                String result = data.getStringExtra(CaptureActivity.SCANRESULT);
-                if (result != null) {
-                    Bundle bundle = BackStackManager.getInstance().getCurrent().getDate();
-                    if (bundle == null) {
-                        bundle = new Bundle();
-                    }
-                    bundle.putString("sn", result);
-                }
-            }
-        }
     }
 
     @Override

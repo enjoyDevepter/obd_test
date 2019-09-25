@@ -3,17 +3,11 @@ package com.mapbar.adas;
 import android.app.Application;
 import android.os.Handler;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 
 public class AdasApplication extends Application {
-
-    public static HUDInfo.HUDItem currentHUDItem;
-
-    public static List<HUDInfo> hudInfos = new ArrayList<>();
 
     public static void registerUncaughtException() {
         final Thread.UncaughtExceptionHandler defaultUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();

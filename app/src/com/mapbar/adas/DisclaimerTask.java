@@ -18,7 +18,7 @@ public class DisclaimerTask extends BaseTask {
             }
         });
         if (BlueManager.getInstance().isConnected()) {
-            PageManager.go(new ChoiceHUDTypePage());
+            PageManager.go(new ResetPage());
         } else {
             BlueManager.getInstance().stopScan(false);
             PageManager.go(new ConnectPage());
