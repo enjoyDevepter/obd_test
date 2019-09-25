@@ -1372,6 +1372,7 @@ public class BlueManager {
                     });
                     break;
                 case MSG_RESET:
+                    Log.d("OBDEvent.RESET");
                     mMainHandler.post(new Runnable() {
                         @Override
                         public void run() {
