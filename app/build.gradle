@@ -70,7 +70,7 @@ android {
         }
         variant.getPackageApplicationProvider().get().outputScope.apkDatas.forEach { apkData ->
             apkData.outputFileName =
-                    variant.flavorName + "_" + "test_" +
+                    variant.flavorName + "_" + "test" +
                             ".apk"
         }
     }
