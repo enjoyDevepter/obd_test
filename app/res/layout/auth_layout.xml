@@ -22,14 +22,17 @@
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="70dp"
-        android:background="@drawable/check_status_bg" />
+        android:background="@drawable/check_status_bg"
+        android:visibility="invisible" />
 
     <TextView
+        android:id="@+id/info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="25dp"
         android:gravity="left"
+        android:visibility="invisible"
         android:lineSpacingExtra="4dp"
         android:text="正在恢复出厂设置，请不要关闭手机APP"
         android:textColor="@color/text_color"

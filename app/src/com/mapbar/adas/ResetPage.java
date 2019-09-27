@@ -37,6 +37,8 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
     private TextView resetTV;
     @ViewInject(R.id.status)
     private View statusV;
+    @ViewInject(R.id.info)
+    private View infoV;
     private AnimationDrawable animationDrawable;
 
 
@@ -47,7 +49,6 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
         resetTV.setOnClickListener(this);
         statusV.setBackgroundResource(R.drawable.check_status_bg);
         animationDrawable = (AnimationDrawable) statusV.getBackground();
-        animationDrawable.start();
         BlueManager.getInstance().addBleCallBackListener(this);
     }
 
@@ -55,7 +56,11 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.reset:
+                resetTV.setVisibility(View.INVISIBLE);
                 BlueManager.getInstance().send(ProtocolUtils.getOBDStatus(System.currentTimeMillis()));
+                animationDrawable.start();
+                statusV.setVisibility(View.VISIBLE);
+                infoV.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -94,6 +99,12 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
             public void onResponse(Call call, Response response) throws IOException {
                 String responese = response.body().string();
                 Log.d(responese);
+                GlobalUtil.getHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        resetTV.setVisibility(View.VISIBLE);
+                    }
+                });
                 try {
                     final JSONObject result = new JSONObject(responese);
                     if ("000".equals(result.optString("status"))) {
@@ -101,7 +112,12 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
                         if ("1".equals(code)) {
                             BlueManager.getInstance().send(ProtocolUtils.reset());
                         } else {
-
+                            GlobalUtil.getHandler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(GlobalUtil.getContext(), "恢复出厂设置失败!", Toast.LENGTH_LONG).show();
+                                }
+                            });
                         }
                     } else {
                         GlobalUtil.getHandler().post(new Runnable() {
