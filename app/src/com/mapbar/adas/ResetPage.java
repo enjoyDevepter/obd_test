@@ -128,7 +128,7 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
                         });
                     }
                 } catch (JSONException e) {
-                    Log.d("sn_check failure " + e.getMessage());
+                    Log.d("reset failure " + e.getMessage());
                 }
             }
         });
