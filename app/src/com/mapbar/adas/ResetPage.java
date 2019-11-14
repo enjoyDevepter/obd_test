@@ -38,7 +38,7 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
     @ViewInject(R.id.status)
     private View statusV;
     @ViewInject(R.id.info)
-    private View infoV;
+    private TextView infoV;
     private AnimationDrawable animationDrawable;
 
 
@@ -59,6 +59,7 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
                 resetTV.setVisibility(View.INVISIBLE);
                 BlueManager.getInstance().send(ProtocolUtils.getOBDStatus(System.currentTimeMillis()));
                 animationDrawable.start();
+                infoV.setTextColor(R.color.text_color);
                 statusV.setVisibility(View.VISIBLE);
                 infoV.setVisibility(View.VISIBLE);
                 break;
@@ -151,6 +152,9 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
                 if (animationDrawable.isRunning()) {
                     animationDrawable.stop();
                 }
+                statusV.setVisibility(View.INVISIBLE);
+                infoV.setTextColor(android.R.color.holo_red_light);
+                infoV.setText("恢复出厂设置成功！");
                 AlarmManager.getInstance().play(R.raw.reset);
                 break;
             default:
