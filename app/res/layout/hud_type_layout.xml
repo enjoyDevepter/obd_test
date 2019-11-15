@@ -7,18 +7,30 @@
 
     <include layout="@layout/tittle_layout" />
 
+    <EditText
+        android:id="@+id/count"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@android:color/transparent"
+        android:hint="请输入需要出厂盒子数量"
+        android:inputType="number"
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/holo_red_light" />
+
     <ExpandableListView
         android:id="@+id/expandablelistView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="15dp"
         android:layout_weight="1"
         android:background="#ffffff"
         android:cacheColorHint="#00000000"
-        android:groupIndicator="@null"
         android:childDivider="@android:color/transparent"
+        android:groupIndicator="@null"
         android:listSelector="#00000000"
         android:scrollbars="none" />
 
@@ -28,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:layout_marginLeft="@dimen/common_margin_lr"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="@dimen/common_margin_lr"
         android:layout_marginBottom="10dp"
         android:background="@drawable/btn_bg"

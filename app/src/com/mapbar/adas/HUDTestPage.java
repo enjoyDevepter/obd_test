@@ -54,7 +54,7 @@ public class HUDTestPage extends AppBasePage implements BleCallBackListener {
         back.setVisibility(View.GONE);
         reportV.setVisibility(View.GONE);
         title.setText("测试");
-        typeTV.setText(AdasApplication.currentHUDItem.getName());
+        typeTV.setText(AdasApplication.currentHUDItem.getName() + "\r\n" + AdasApplication.count);
         BlueManager.getInstance().send(ProtocolUtils.getTest());
         BlueManager.getInstance().addBleCallBackListener(this);
     }

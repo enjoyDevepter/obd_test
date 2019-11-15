@@ -239,6 +239,16 @@ public class AuthPage extends AppBasePage implements View.OnClickListener, BleCa
                             if ("000".equals(result.optString("status"))) {
                                 Toast.makeText(AuthPage.this.getContext(), "测试完成！", Toast.LENGTH_LONG).show();
                                 AlarmManager.getInstance().play(R.raw.box);
+                                AdasApplication.count--;
+                                if (AdasApplication.count == 0) {
+                                    try {
+                                        Thread.sleep(1000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    } finally {
+                                        System.exit(0);
+                                    }
+                                }
                             } else {
                                 Log.d("activate failure");
                             }

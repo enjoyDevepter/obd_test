@@ -1,6 +1,7 @@
 package com.mapbar.adas;
 
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +32,8 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
     private View reportV;
     @ViewInject(R.id.next)
     private View nextV;
+    @ViewInject(R.id.count)
+    private EditText countET;
     @ViewInject(R.id.expandablelistView)
     private ExpandableListView groupLV;
 
@@ -63,7 +66,7 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
 
 
     private void initData() {
-        if (AdasApplication.hudInfos.size()>0) {
+        if (AdasApplication.hudInfos.size() > 0) {
             return;
         }
         try {
@@ -108,6 +111,12 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.next:
+                String count = countET.getText().toString().trim();
+                if ("".equals(count)) {
+                    Toast.makeText(GlobalUtil.getContext(), "请输入待出厂盒子个数!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                AdasApplication.count = Integer.valueOf(count);
                 BlueManager.getInstance().send(ProtocolUtils.choiceHUD(currentHUDItem.getType()));
                 break;
             default:
@@ -145,6 +154,7 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
     }
 
     HUDInfo.HUDItem currentHUDItem;
+
     @Override
     public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
         HUDInfo hudInfo = (HUDInfo) hudTypeExpandableListAdapter.getGroup(groupPosition);

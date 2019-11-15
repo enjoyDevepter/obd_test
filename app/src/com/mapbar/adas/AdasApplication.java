@@ -15,6 +15,8 @@ public class AdasApplication extends Application {
 
     public static List<HUDInfo> hudInfos = new ArrayList<>();
 
+    public static int count;
+
     public static void registerUncaughtException() {
         final Thread.UncaughtExceptionHandler defaultUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
