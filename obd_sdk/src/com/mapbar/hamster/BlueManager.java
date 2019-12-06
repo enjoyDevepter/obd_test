@@ -897,7 +897,7 @@ public class BlueManager {
                         case 00:
                             int v = byteToShort(new byte[]{content[17], content[18]}) & 0xFFFF;
                             boolean a = false, b = false, c = false;
-                            if (v == 0) {
+                            if (v < 8500 || v > 14500) {
                                 message.what = MSG_TEST_V_ERROR;
                             } else {
                                 a = true;

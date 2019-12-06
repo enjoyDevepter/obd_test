@@ -242,7 +242,7 @@ public class AuthPage extends AppBasePage implements View.OnClickListener, BleCa
                                 AdasApplication.count--;
                                 if (AdasApplication.count == 0) {
                                     try {
-                                        Thread.sleep(1000);
+                                        Thread.sleep(4000);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     } finally {
