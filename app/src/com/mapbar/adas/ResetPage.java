@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.mapbar.adas.anno.PageSetting;
 import com.mapbar.adas.anno.ViewInject;
 import com.mapbar.adas.utils.AlarmManager;
@@ -39,7 +40,21 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
     private View statusV;
     @ViewInject(R.id.info)
     private TextView infoV;
+
+    @ViewInject(R.id.type)
+    private TextView typeTV;
+
+    @ViewInject(R.id.tire)
+    private TextView tireTV;
+
+    @ViewInject(R.id.obd)
+    private TextView obdTV;
+
+    @ViewInject(R.id.fm)
+    private TextView fmTV;
     private AnimationDrawable animationDrawable;
+
+    OBDStatusInfo obdStatusInfo;
 
 
     @Override
@@ -76,7 +91,7 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
     }
 
 
-    private void reset(OBDStatusInfo obdStatusInfo) {
+    private void reset() {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("serialNumber", obdStatusInfo.getSn());
@@ -135,6 +150,104 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
         });
     }
 
+    private void getOBDInfo() {
+
+        if (obdStatusInfo != null) {
+            fmTV.setText(obdStatusInfo.isSupportFM() ? "支持" : "不支持");
+
+            String type = "";
+            switch (obdStatusInfo.getHudType()) {
+                case 0x02:
+                    type = "M2";
+                    break;
+                case 0x03:
+                    type = "M3";
+                    break;
+                case 0x04:
+                    type = "M4";
+                    break;
+                case 0x22:
+                    type = "F2";
+                    break;
+                case 0x13:
+                case 0x23:
+                    type = "F3";
+                    break;
+                case 0x14:
+                case 0x24:
+                    type = "F4";
+                    break;
+                case 0x15:
+                case 0x25:
+                    type = "F5";
+                    break;
+                case 0x16:
+                case 0x26:
+                    type = "F6";
+                    break;
+                case 0x33:
+                case 0x43:
+                    type = "P3";
+                    break;
+                case 0x34:
+                case 0x44:
+                    type = "P4";
+                    break;
+                case 0x35:
+                case 0x45:
+                    type = "P5";
+                    break;
+                case 0x36:
+                case 0x46:
+                    type = "P6";
+                    break;
+                case 0x37:
+                case 0x47:
+                    type = "P7";
+                    break;
+            }
+            typeTV.setText(type);
+        }
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("serialNumber", obdStatusInfo.getSn());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("checkOBDRight input " + jsonObject.toString());
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("params", GlobalUtil.encrypt(jsonObject.toString())).build();
+
+        Request request = new Request.Builder()
+                .url(URLUtils.RIGHT_CHECK)
+                .post(requestBody)
+                .addHeader("content-type", "application/json;charset:utf-8")
+                .build();
+        GlobalUtil.getOkHttpClient().newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("checkOBDRight failure " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responese = response.body().string();
+                Log.d("checkOBDRight success " + responese);
+                final OBDRightInfo obdRightInfo = JSON.parseObject(responese, OBDRightInfo.class);
+                GlobalUtil.getHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        tireTV.setText(obdRightInfo.iSupportTire() ? "支持" : "不支持");
+                        obdTV.setText(obdRightInfo.iSupportCheck() ? "支持" : "不支持");
+                    }
+                });
+            }
+        });
+    }
+
     @Override
     public void onEvent(int event, Object data) {
         switch (event) {
@@ -143,7 +256,9 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
             case OBDEvent.AUTHORIZATION: //未授权或者授权过期
                 break;
             case OBDEvent.AUTHORIZATION_SUCCESS:
-                reset((OBDStatusInfo) data);
+                obdStatusInfo = (OBDStatusInfo) data;
+                reset();
+                getOBDInfo();
                 break;
             case OBDEvent.AUTHORIZATION_FAIL:
             case OBDEvent.NO_PARAM: // 无参数

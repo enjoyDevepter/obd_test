@@ -32,11 +32,11 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="25dp"
         android:gravity="left"
-        android:visibility="invisible"
         android:lineSpacingExtra="4dp"
         android:text="正在恢复出厂设置，请不要关闭手机APP"
         android:textColor="@color/text_color"
-        android:textSize="@dimen/text_size" />
+        android:textSize="@dimen/text_size"
+        android:visibility="invisible" />
 
 
     <TextView
@@ -51,5 +51,131 @@
         android:text="恢复出厂设置"
         android:textColor="#FFFFFFFF"
         android:textSize="18sp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="HUD类型"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/title_text_25" />
+
+            <TextView
+                android:id="@+id/type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="HUD类型"
+                android:textColor="@color/seekbar_textcolor_red"
+                android:textSize="@dimen/title_text_25" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="是否支持胎压"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/title_text_25" />
+
+            <TextView
+                android:id="@+id/tire"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="是"
+                android:textColor="@color/seekbar_textcolor_red"
+                android:textSize="@dimen/title_text_25" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="是否支持OBD"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/title_text_25" />
+
+            <TextView
+                android:id="@+id/obd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="是"
+                android:textColor="@color/seekbar_textcolor_red"
+                android:textSize="@dimen/title_text_25" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="是否支持FM"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/title_text_25" />
+
+            <TextView
+                android:id="@+id/fm"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="是"
+                android:textColor="@color/seekbar_textcolor_red"
+                android:textSize="@dimen/title_text_25" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -19,6 +19,7 @@
     <dimen name="textSize36">18sp</dimen>
     <dimen name="textSize48">24sp</dimen>
     <dimen name="title_text_size">33sp</dimen>
+    <dimen name="title_text_25">25sp</dimen>
     <dimen name="padding_10">5dp</dimen>
     <dimen name="padding_38">19dp</dimen>
     <dimen name="padding_20">10dp</dimen>
