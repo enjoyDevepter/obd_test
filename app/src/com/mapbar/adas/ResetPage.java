@@ -179,6 +179,12 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d("checkOBDRight failure " + e.getMessage());
+                GlobalUtil.getHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(GlobalUtil.getContext(),"网络异常！",0).show();
+                    }
+                });
             }
 
             @Override
