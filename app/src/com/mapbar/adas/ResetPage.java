@@ -65,18 +65,21 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
         statusV.setBackgroundResource(R.drawable.check_status_bg);
         animationDrawable = (AnimationDrawable) statusV.getBackground();
         BlueManager.getInstance().addBleCallBackListener(this);
+        BlueManager.getInstance().send(ProtocolUtils.getOBDStatus(System.currentTimeMillis()));
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.reset:
-                resetTV.setVisibility(View.INVISIBLE);
-                BlueManager.getInstance().send(ProtocolUtils.getOBDStatus(System.currentTimeMillis()));
-                animationDrawable.start();
-                infoV.setTextColor(R.color.text_color);
-                statusV.setVisibility(View.VISIBLE);
-                infoV.setVisibility(View.VISIBLE);
+                if (obdStatusInfo != null) {
+                    resetTV.setVisibility(View.INVISIBLE);
+                    animationDrawable.start();
+                    infoV.setTextColor(R.color.text_color);
+                    statusV.setVisibility(View.VISIBLE);
+                    infoV.setVisibility(View.VISIBLE);
+                    reset();
+                }
                 break;
         }
     }
@@ -151,62 +154,8 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
     }
 
     private void getOBDInfo() {
-
-        if (obdStatusInfo != null) {
-            fmTV.setText(obdStatusInfo.isSupportFM() ? "支持" : "不支持");
-
-            String type = "";
-            switch (obdStatusInfo.getHudType()) {
-                case 0x02:
-                    type = "M2";
-                    break;
-                case 0x03:
-                    type = "M3";
-                    break;
-                case 0x04:
-                    type = "M4";
-                    break;
-                case 0x22:
-                    type = "F2";
-                    break;
-                case 0x13:
-                case 0x23:
-                    type = "F3";
-                    break;
-                case 0x14:
-                case 0x24:
-                    type = "F4";
-                    break;
-                case 0x15:
-                case 0x25:
-                    type = "F5";
-                    break;
-                case 0x16:
-                case 0x26:
-                    type = "F6";
-                    break;
-                case 0x33:
-                case 0x43:
-                    type = "P3";
-                    break;
-                case 0x34:
-                case 0x44:
-                    type = "P4";
-                    break;
-                case 0x35:
-                case 0x45:
-                    type = "P5";
-                    break;
-                case 0x36:
-                case 0x46:
-                    type = "P6";
-                    break;
-                case 0x37:
-                case 0x47:
-                    type = "P7";
-                    break;
-            }
-            typeTV.setText(type);
+        if (obdStatusInfo == null) {
+            return;
         }
 
         JSONObject jsonObject = new JSONObject();
@@ -240,6 +189,206 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
                 GlobalUtil.getHandler().post(new Runnable() {
                     @Override
                     public void run() {
+                        boolean supportTire = obdRightInfo.iSupportTire();
+                        boolean supportCheck = obdRightInfo.iSupportCheck();
+                        boolean supportFM = obdStatusInfo.isSupportFM();
+                        String type = "";
+                        switch (obdStatusInfo.getHudType()) {
+                            case 0x00:
+                                type = "T1-基础版";
+                                break;
+                            case 0x02:
+                                if (!supportTire && !supportCheck) {
+                                    type = "M2-基础版";
+                                } else if (!supportTire && supportCheck) {
+                                    type = "M2-OBD汽车医生版";
+                                } else if (supportTire && supportCheck) {
+                                    type = "M2-豪华版";
+                                } else {
+                                    type = "M2_未定义";
+                                }
+                                break;
+                            case 0x03:
+                                if (!supportTire && !supportCheck) {
+                                    type = "M3-基础版";
+                                } else if (!supportTire && supportCheck) {
+                                    type = "M3-OBD汽车医生版";
+                                } else if (supportTire && supportCheck) {
+                                    type = "M3-豪华版";
+                                } else {
+                                    type = "M3_未定义";
+                                }
+                                break;
+                            case 0x04:
+                                if (!supportTire && !supportCheck) {
+                                    type = "M4-基础版";
+                                } else if (!supportTire && supportCheck) {
+                                    type = "M4-OBD汽车医生版";
+                                } else if (supportTire && supportCheck) {
+                                    type = "M4-豪华版";
+                                } else {
+                                    type = "M4_未定义";
+                                }
+                                break;
+                            case 0x22:
+                                if (!supportTire && !supportCheck) {
+                                    type = "F2-基础版";
+                                } else if (!supportTire && supportCheck) {
+                                    type = "F2-OBD汽车医生版";
+                                } else if (supportTire && supportCheck) {
+                                    type = "F2-豪华版";
+                                } else {
+                                    type = "F2_未定义";
+                                }
+                                break;
+                            case 0x13:
+                            case 0x23:
+                                if (!supportTire && !supportCheck && !supportFM) {
+                                    type = "F3-基础版";
+                                } else if (!supportTire && supportCheck && !supportFM) {
+                                    type = "F3-OBD汽车医生版";
+                                } else if (supportTire && supportCheck && !supportFM) {
+                                    type = "F3-豪华版";
+                                } else if (!supportTire && supportCheck && supportFM) {
+                                    type = "F3-FM版";
+                                } else if (supportTire && supportCheck && supportFM) {
+                                    type = "F3-至尊";
+                                } else {
+                                    type = "F3_未定义";
+                                }
+                                break;
+                            case 0x14:
+                            case 0x24:
+                                if (!supportTire && !supportCheck && !supportFM) {
+                                    type = "F4-基础版";
+                                } else if (!supportTire && supportCheck && !supportFM) {
+                                    type = "F4-OBD汽车医生版";
+                                } else if (supportTire && supportCheck && !supportFM) {
+                                    type = "F4-豪华版";
+                                } else if (!supportTire && supportCheck && supportFM) {
+                                    type = "F4-FM版";
+                                } else if (supportTire && supportCheck && supportFM) {
+                                    type = "F4-至尊";
+                                } else {
+                                    type = "F4_未定义";
+                                }
+                                break;
+                            case 0x15:
+                            case 0x25:
+                                if (!supportTire && !supportCheck && !supportFM) {
+                                    type = "F5-基础版";
+                                } else if (!supportTire && supportCheck && !supportFM) {
+                                    type = "F5-OBD汽车医生版";
+                                } else if (supportTire && supportCheck && !supportFM) {
+                                    type = "F5-豪华版";
+                                } else if (!supportTire && supportCheck && supportFM) {
+                                    type = "F5-FM版";
+                                } else if (supportTire && supportCheck && supportFM) {
+                                    type = "F5-至尊";
+                                } else {
+                                    type = "F5_未定义";
+                                }
+                                break;
+                            case 0x16:
+                            case 0x26:
+                                if (!supportTire && !supportCheck && !supportFM) {
+                                    type = "F6-基础版";
+                                } else if (!supportTire && supportCheck && !supportFM) {
+                                    type = "F6-OBD汽车医生版";
+                                } else if (supportTire && supportCheck && !supportFM) {
+                                    type = "F6-豪华版";
+                                } else if (!supportTire && supportCheck && supportFM) {
+                                    type = "F6-FM版";
+                                } else if (supportTire && supportCheck && supportFM) {
+                                    type = "F6-至尊";
+                                } else {
+                                    type = "F6_未定义";
+                                }
+                                break;
+                            case 0x33:
+                            case 0x43:
+                                if (!supportTire && !supportCheck && !supportFM) {
+                                    type = "P3-基础版";
+                                } else if (!supportTire && supportCheck && !supportFM) {
+                                    type = "P3-OBD汽车医生版";
+                                } else if (supportTire && supportCheck && !supportFM) {
+                                    type = "P3-豪华版";
+                                } else if (!supportTire && supportCheck && supportFM) {
+                                    type = "P3-FM版";
+                                } else if (supportTire && supportCheck && supportFM) {
+                                    type = "P3-至尊";
+                                } else {
+                                    type = "P3_未定义";
+                                }
+                                break;
+                            case 0x34:
+                            case 0x44:
+                                if (!supportTire && !supportCheck && !supportFM) {
+                                    type = "P4-基础版";
+                                } else if (!supportTire && supportCheck && !supportFM) {
+                                    type = "P4-OBD汽车医生版";
+                                } else if (supportTire && supportCheck && !supportFM) {
+                                    type = "P4-豪华版";
+                                } else if (!supportTire && supportCheck && supportFM) {
+                                    type = "P4-FM版";
+                                } else if (supportTire && supportCheck && supportFM) {
+                                    type = "P4-至尊";
+                                } else {
+                                    type = "P4_未定义";
+                                }
+                                break;
+                            case 0x35:
+                            case 0x45:
+                                if (!supportTire && !supportCheck && !supportFM) {
+                                    type = "P5-基础版";
+                                } else if (!supportTire && supportCheck && !supportFM) {
+                                    type = "P5-OBD汽车医生版";
+                                } else if (supportTire && supportCheck && !supportFM) {
+                                    type = "P5-豪华版";
+                                } else if (!supportTire && supportCheck && supportFM) {
+                                    type = "P5-FM版";
+                                } else if (supportTire && supportCheck && supportFM) {
+                                    type = "P5-至尊";
+                                } else {
+                                    type = "P5_未定义";
+                                }
+                                break;
+                            case 0x36:
+                            case 0x46:
+                                if (!supportTire && !supportCheck && !supportFM) {
+                                    type = "P6-基础版";
+                                } else if (!supportTire && supportCheck && !supportFM) {
+                                    type = "P6-OBD汽车医生版";
+                                } else if (supportTire && supportCheck && !supportFM) {
+                                    type = "P6-豪华版";
+                                } else if (!supportTire && supportCheck && supportFM) {
+                                    type = "P6-FM版";
+                                } else if (supportTire && supportCheck && supportFM) {
+                                    type = "P6-至尊";
+                                } else {
+                                    type = "P6_未定义";
+                                }
+                                break;
+                            case 0x37:
+                            case 0x47:
+                                if (!supportTire && !supportCheck && !supportFM) {
+                                    type = "P7-基础版";
+                                } else if (!supportTire && supportCheck && !supportFM) {
+                                    type = "P7-OBD汽车医生版";
+                                } else if (supportTire && supportCheck && !supportFM) {
+                                    type = "P7-豪华版";
+                                } else if (!supportTire && supportCheck && supportFM) {
+                                    type = "P7-FM版";
+                                } else if (supportTire && supportCheck && supportFM) {
+                                    type = "P7-至尊";
+                                } else {
+                                    type = "P7_未定义";
+                                }
+                                break;
+                        }
+                        typeTV.setText(type);
+
+                        fmTV.setText(obdStatusInfo.isSupportFM() ? "支持" : "不支持");
                         tireTV.setText(obdRightInfo.iSupportTire() ? "支持" : "不支持");
                         obdTV.setText(obdRightInfo.iSupportCheck() ? "支持" : "不支持");
                     }
@@ -257,7 +406,6 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
                 break;
             case OBDEvent.AUTHORIZATION_SUCCESS:
                 obdStatusInfo = (OBDStatusInfo) data;
-                reset();
                 getOBDInfo();
                 break;
             case OBDEvent.AUTHORIZATION_FAIL:
