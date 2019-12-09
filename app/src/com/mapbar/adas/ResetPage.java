@@ -410,10 +410,10 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
                 break;
             case OBDEvent.AUTHORIZATION: //未授权或者授权过期
             case OBDEvent.AUTHORIZATION_SUCCESS:
+            case OBDEvent.AUTHORIZATION_FAIL:
                 obdStatusInfo = (OBDStatusInfo) data;
                 getOBDInfo();
                 break;
-            case OBDEvent.AUTHORIZATION_FAIL:
             case OBDEvent.NO_PARAM: // 无参数
                 break;
             case OBDEvent.RESET:
