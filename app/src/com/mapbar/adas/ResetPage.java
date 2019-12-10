@@ -44,6 +44,9 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
     @ViewInject(R.id.type)
     private TextView typeTV;
 
+    @ViewInject(R.id.update)
+    private TextView updateTV;
+
     @ViewInject(R.id.tire)
     private TextView tireTV;
 
@@ -182,7 +185,7 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
                 GlobalUtil.getHandler().post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(GlobalUtil.getContext(),"网络异常！",0).show();
+                        Toast.makeText(GlobalUtil.getContext(), "网络异常！", 0).show();
                     }
                 });
             }
@@ -394,6 +397,8 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
                         }
                         typeTV.setText(type);
 
+                        updateTV.setVisibility(obdStatusInfo.isNews() ? View.INVISIBLE : View.VISIBLE);
+
                         fmTV.setText(obdStatusInfo.isSupportFM() ? "支持" : "不支持");
                         tireTV.setText(obdRightInfo.iSupportTire() ? "支持" : "不支持");
                         obdTV.setText(obdRightInfo.iSupportCheck() ? "支持" : "不支持");
@@ -411,10 +416,9 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
             case OBDEvent.AUTHORIZATION: //未授权或者授权过期
             case OBDEvent.AUTHORIZATION_SUCCESS:
             case OBDEvent.AUTHORIZATION_FAIL:
+            case OBDEvent.NO_PARAM: // 无参数
                 obdStatusInfo = (OBDStatusInfo) data;
                 getOBDInfo();
-                break;
-            case OBDEvent.NO_PARAM: // 无参数
                 break;
             case OBDEvent.RESET:
                 if (animationDrawable.isRunning()) {

@@ -666,6 +666,14 @@ public class BlueManager {
                         message.what = MSG_STATUS_UPDATA;
                         mHandler.sendMessage(message);
                     }
+
+                    // 三期新需求，优先判断是否选择车型
+                    if (content[1] == 02) {
+                        obdStatusInfo.setNews(true);
+                        obdStatusInfo.setHudType(content[68]);
+                        obdStatusInfo.setSupportNavi(content[69] == 1);
+                        obdStatusInfo.setSupportFM(content[70] == 1);
+                    }
 //                    Message message = mHandler.obtainMessage();
 //                    Bundle bundle = new Bundle();
 //                    bundle.putSerializable("obd_status_info", obdStatusInfo);
@@ -708,13 +716,6 @@ public class BlueManager {
                         mHandler.sendMessage(message);
                     }
 
-                    // 三期新需求，优先判断是否选择车型
-                    if (content[1] == 02) {
-                        obdStatusInfo.setNews(true);
-                        obdStatusInfo.setHudType(content[68]);
-                        obdStatusInfo.setSupportNavi(content[69] == 1);
-                        obdStatusInfo.setSupportFM(content[70] == 1);
-                    }
 
                     // 判断是否存在车型参数
                     if ((content[6] & 15) == 00) { // 未车型参数或者车型参数更新失败

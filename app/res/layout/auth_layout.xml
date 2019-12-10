@@ -180,6 +180,18 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:lines="1"
+            android:text="请升级OBD版本"
+            android:visibility="invisible"
+            android:textColor="@color/seekbar_textcolor_red"
+            android:textSize="@dimen/title_text_25" />
+
     </LinearLayout>
 
 </LinearLayout>
