@@ -2,6 +2,7 @@ package com.mapbar.adas;
 
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.AnimationDrawable;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -414,6 +415,9 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
             case OBDEvent.UNREGISTERED://未注册
                 break;
             case OBDEvent.AUTHORIZATION: //未授权或者授权过期
+                obdStatusInfo = (OBDStatusInfo) data;
+                getLisense();
+                break;
             case OBDEvent.AUTHORIZATION_SUCCESS:
             case OBDEvent.AUTHORIZATION_FAIL:
             case OBDEvent.NO_PARAM: // 无参数
@@ -432,5 +436,50 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
             default:
                 break;
         }
+    }
+
+    /**
+     * 获取授权码
+     */
+    private void getLisense() {
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("serialNumber", obdStatusInfo.getSn());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("getLisense input " + jsonObject.toString());
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("params", GlobalUtil.encrypt(jsonObject.toString())).build();
+
+        Request request = new Request.Builder()
+                .url(URLUtils.GET_LISENSE)
+                .post(requestBody)
+                .addHeader("content-type", "application/json;charset:utf-8")
+                .build();
+        GlobalUtil.getOkHttpClient().newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("getLisense onFailure ");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responese = response.body().string();
+                Log.d("getLisense success " + responese);
+                try {
+                    final JSONObject result = new JSONObject(responese);
+                    if ("000".equals(result.optString("status"))) {
+                        String code = result.optString("rightStr");
+                        BlueManager.getInstance().send(ProtocolUtils.auth(obdStatusInfo.getSn(), code));
+                    }
+                } catch (JSONException e) {
+                    Log.d("getLisense failure " + e.getMessage());
+                }
+            }
+        });
     }
 }

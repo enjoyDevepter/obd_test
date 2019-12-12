@@ -29,6 +29,28 @@ public class ProtocolUtils {
         return result;
     }
 
+    public static byte[] auth(String sn, String authCode) {
+        Log.d("Protocol auth ===");
+        byte[] snBytes = sn.getBytes();
+        byte[] authBytes = authCode.getBytes();
+        byte[] result = new byte[snBytes.length + authBytes.length + 5];
+        result[0] = PROTOCOL_HEAD_TAIL;
+        result[1] = (byte) PROTOCAL_COMMON_00;
+        result[2] = 02;
+        int cr = result[1] ^ result[2];
+        for (int i = 0; i < snBytes.length; i++) {
+            result[3 + i] = snBytes[i];
+            cr = cr ^ snBytes[i];
+        }
+        for (int i = 0; i < authBytes.length; i++) {
+            result[snBytes.length + 3 + i] = authBytes[i];
+            cr = cr ^ authBytes[i];
+        }
+        result[result.length - 2] = (byte) cr;
+        result[result.length - 1] = PROTOCOL_HEAD_TAIL;
+        return result;
+    }
+
     public static byte[] reset() {
         Log.d("Protocol reset ==");
         byte[] result = new byte[6];

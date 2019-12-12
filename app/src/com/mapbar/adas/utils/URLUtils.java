@@ -12,5 +12,6 @@ public class URLUtils {
 //    public static final String HOST = "http://tpms.1668288.com/";
     public static final String RESET = BuildConfig.HOST + "service/box/clearReturn";
     public static final String RIGHT_CHECK = BuildConfig.HOST + "service/box/getSNRight";
+    public static final String GET_LISENSE = BuildConfig.HOST + "service/lisense/getLisense";
 
 }
