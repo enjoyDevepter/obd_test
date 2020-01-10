@@ -352,6 +352,7 @@ public class BlueManager {
 
         scanResult.clear();
 
+        Log.d("startScan");
         mBluetoothAdapter.startLeScan(leScanCallback);
 
         mMainHandler.postDelayed(new Runnable() {
@@ -367,6 +368,7 @@ public class BlueManager {
         if (null == mBluetoothAdapter || !isScaning) {
             return;
         }
+        Log.d("stopScan");
         isScaning = false;
         notifyBleCallBackListener(OBDEvent.BLUE_SCAN_FINISHED, find);
         mBluetoothAdapter.stopLeScan(leScanCallback);
@@ -690,15 +692,15 @@ public class BlueManager {
                     }
                     // 判断是否授权
                     if ((content[5] & 15) == 0) { // 未授权或者授权过期或者授权失败
-                        if ((content[5] >> 4) != 0) { // 授权失败
-                            Message message = mHandler.obtainMessage();
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("obd_status_info", obdStatusInfo);
-                            message.setData(bundle);
-                            message.what = MSG_AUTHORIZATION_FAIL;
-                            mHandler.sendMessage(message);
-                            return;
-                        }
+//                        if ((content[5] >> 4) != 0) { // 授权失败
+//                            Message message = mHandler.obtainMessage();
+//                            Bundle bundle = new Bundle();
+//                            bundle.putSerializable("obd_status_info", obdStatusInfo);
+//                            message.setData(bundle);
+//                            message.what = MSG_AUTHORIZATION_FAIL;
+//                            mHandler.sendMessage(message);
+//                            return;
+//                        }
                         Message message = mHandler.obtainMessage();
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("obd_status_info", obdStatusInfo);
@@ -706,7 +708,7 @@ public class BlueManager {
                         message.what = MSG_AUTHORIZATION;
                         mHandler.sendMessage(message);
                         return;
-                    } else {
+                    } else if ((content[5] & 15) == 1) {
                         // 授权成功
                         Message message = mHandler.obtainMessage();
                         Bundle bundle = new Bundle();
@@ -714,6 +716,14 @@ public class BlueManager {
                         message.setData(bundle);
                         message.what = MSG_AUTHORIZATION_SUCCESS;
                         mHandler.sendMessage(message);
+                    } else {
+                        Message message = mHandler.obtainMessage();
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("obd_status_info", obdStatusInfo);
+                        message.setData(bundle);
+                        message.what = MSG_AUTHORIZATION_FAIL;
+                        mHandler.sendMessage(message);
+                        return;
                     }
 
 
@@ -888,8 +898,8 @@ public class BlueManager {
                         mHandler.sendMessage(message);
                     }
                 }
-            } else if(content[0]==0x06){
-                if(content[1] == 0x12){
+            } else if (content[0] == 0x06) {
+                if (content[1] == 0x12) {
                     Message message = mHandler.obtainMessage();
                     Bundle bundle = new Bundle();
                     message.what = MSG_RESET;
