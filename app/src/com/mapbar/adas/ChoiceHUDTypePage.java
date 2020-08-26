@@ -31,7 +31,7 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
     @ViewInject(R.id.next)
     private View nextV;
 
-    final String[] items = {"M2", "M3", "M4", "F2", "F3", "F4", "F5", "F6", "P3", "P4", "P5", "P6", "P7"};
+    final String[] items = {"M2", "M3", "M4", "F2", "F3", "F4", "F5", "F6", "P3", "P4", "P5", "P6", "P7","C2"};
     private int index;
     private int type;
     private boolean auto;
@@ -95,27 +95,29 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
                             case 5: // F4
                                 type = 0x24;
                                 break;
-                            case 6:
+                            case 6: // F5
                                 type = 0x25;
                                 break;
-                            case 7:
+                            case 7: // F6
                                 type = 0x26;
                                 break;
-                            case 8:
+                            case 8: // P3
                                 type = 0x43;
                                 break;
-                            case 9:
+                            case 9: // P4
                                 type = 0x44;
                                 break;
-                            case 10:
+                            case 10: // P5
                                 type = 0x45;
                                 break;
-                            case 11:
+                            case 11: // P6
                                 type = 0x46;
                                 break;
-                            case 12:
+                            case 12: // P7
                                 type = 0x47;
                                 break;
+                            case 13: // C2
+                                type = 0x62;
                             default:
                                 break;
                         }
