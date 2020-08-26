@@ -79,7 +79,11 @@ public class BlueManager {
     private static final int MSG_TEST_CAN_ERROR = 192; // HUD Can线异常
     private static final int MSG_TEST_K_ERROR = 193; // HUD K线异常
     private static final int MSG_FM_ERROR = 194; // HUD FM异常
-    private static final int MSG_TEST_OK = 195; // HUD 测试正常
+    private static final int MSG_W25Q16_ERROR = 195; // HUD W25Q16异常
+    private static final int MSG_G_SENSOR_ERROR = 196; // HUD G_SENSOR异常
+    private static final int MSG_GPS_ERROR = 197; // HUD GPS异常
+    private static final int MSG_ADC_ERROR = 198; // HUD ADC异常
+    private static final int MSG_TEST_OK = 199; // HUD 测试正常
 
 
     private static final int MSG_VERIFY = 2;
@@ -886,30 +890,53 @@ public class BlueManager {
                     mHandler.sendMessage(message);
                 }
             } else if (content[0] == 0x07) {
-                if (content[1] == 01) {
+                if (content[1] == 01 || content[1] == 02) {
                     Message message = mHandler.obtainMessage();
                     switch (content[4]) {
                         case 00:
-                            int v = byteToShort(new byte[]{content[17], content[18]}) & 0xFFFF;
-                            boolean a = false, b = false, c = false;
-                            if (v < 9000 || v > 12500) {
+                            int temp = 0;
+                            temp = byteToShort(new byte[]{content[17], content[18]}) & 0xFFFF;
+                            boolean a = false, b = false, c = false, d = false, e = false, f = false, g = false;
+                            if (temp < 9000 || temp > 12500) {
                                 message.what = MSG_TEST_V_ERROR;
                             } else {
                                 a = true;
                             }
-                            int s = byteToShort(new byte[]{content[19], content[20]}) & 0xFFFF;
-                            if (s < 1 || s > 4095) {
+                            temp = byteToShort(new byte[]{content[19], content[20]}) & 0xFFFF;
+                            if (temp < 1 || temp > 4095) {
                                 message.what = MSG_TEST_C_ERROR;
                             } else {
                                 b = true;
                             }
-                            int f = byteToShort(new byte[]{content[21], content[22]}) & 0xFFFF;
-                            if (f < 875 || f > 1080) {
+                            temp = byteToShort(new byte[]{content[21], content[22]}) & 0xFFFF;
+                            if (temp < 875 || temp > 1080) {
                                 message.what = MSG_FM_ERROR;
                             } else {
                                 c = true;
                             }
-                            if (a && b && c) {
+                            if (content[1] == 02) {
+                                if (0 == content[23]) {
+                                    message.what = MSG_W25Q16_ERROR;
+                                } else {
+                                    d = true;
+                                }
+                                if (0 == content[24]) {
+                                    message.what = MSG_G_SENSOR_ERROR;
+                                } else {
+                                    e = true;
+                                }
+                                if (0 == content[25]) {
+                                    message.what = MSG_GPS_ERROR;
+                                } else {
+                                    f = true;
+                                }
+                                if (0 == content[26]) {
+                                    message.what = MSG_ADC_ERROR;
+                                } else {
+                                    g = true;
+                                }
+                            }
+                            if (a && b && c && d && e && f && g) {
                                 Bundle bundle = new Bundle();
                                 bundle.putByteArray("boxid", Arrays.copyOfRange(content, 5, 17));
                                 message.setData(bundle);
@@ -1353,6 +1380,38 @@ public class BlueManager {
                         @Override
                         public void run() {
                             notifyBleCallBackListener(OBDEvent.TEST_FM_ERROR, null);
+                        }
+                    });
+                    break;
+                case MSG_W25Q16_ERROR:
+                    mMainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            notifyBleCallBackListener(OBDEvent.TEST_W25Q16_ERROR, null);
+                        }
+                    });
+                    break;
+                case MSG_G_SENSOR_ERROR:
+                    mMainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            notifyBleCallBackListener(OBDEvent.TEST_G_SENSOR_ERROR, null);
+                        }
+                    });
+                    break;
+                case MSG_GPS_ERROR:
+                    mMainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            notifyBleCallBackListener(OBDEvent.TEST_GPS_ERROR, null);
+                        }
+                    });
+                    break;
+                case MSG_ADC_ERROR:
+                    mMainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            notifyBleCallBackListener(OBDEvent.TEST_ADC_ERROR, null);
                         }
                     });
                     break;

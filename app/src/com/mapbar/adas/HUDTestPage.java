@@ -26,12 +26,16 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.mapbar.hamster.OBDEvent.TEST_ADC_ERROR;
 import static com.mapbar.hamster.OBDEvent.TEST_CAN_ERROR;
 import static com.mapbar.hamster.OBDEvent.TEST_C_ERROR;
 import static com.mapbar.hamster.OBDEvent.TEST_FM_ERROR;
+import static com.mapbar.hamster.OBDEvent.TEST_GPS_ERROR;
+import static com.mapbar.hamster.OBDEvent.TEST_G_SENSOR_ERROR;
 import static com.mapbar.hamster.OBDEvent.TEST_K_ERROR;
 import static com.mapbar.hamster.OBDEvent.TEST_OK;
 import static com.mapbar.hamster.OBDEvent.TEST_V_ERROR;
+import static com.mapbar.hamster.OBDEvent.TEST_W25Q16_ERROR;
 
 @PageSetting(contentViewId = R.layout.hud_test_layout, toHistory = false)
 public class HUDTestPage extends AppBasePage implements BleCallBackListener {
@@ -90,6 +94,22 @@ public class HUDTestPage extends AppBasePage implements BleCallBackListener {
             case TEST_FM_ERROR:
                 AlarmManager.getInstance().play(R.raw.warm);
                 statusTV.setText("FM 异常");
+                break;
+            case TEST_W25Q16_ERROR:
+                AlarmManager.getInstance().play(R.raw.warm);
+                statusTV.setText("W25Q16 异常");
+                break;
+            case TEST_G_SENSOR_ERROR:
+                AlarmManager.getInstance().play(R.raw.warm);
+                statusTV.setText("G_SENSOR 异常");
+                break;
+            case TEST_GPS_ERROR:
+                AlarmManager.getInstance().play(R.raw.warm);
+                statusTV.setText("GPS 异常");
+                break;
+            case TEST_ADC_ERROR:
+                AlarmManager.getInstance().play(R.raw.warm);
+                statusTV.setText("ADC 异常");
                 break;
             case TEST_OK:
                 updateBoxID(HexUtils.formatHexString((byte[]) data));
