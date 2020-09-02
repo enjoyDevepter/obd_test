@@ -948,6 +948,11 @@ public class BlueManager {
                                 } else {
                                     g = true;
                                 }
+                            } else {
+                                d = true;
+                                e = true;
+                                f = true;
+                                g = true;
                             }
                             if (a && b && c && d && e && f && g) {
                                 Bundle bundle = new Bundle();
