@@ -27,6 +27,7 @@
 
 # Ignore app file
 /app/build
+/app/release
 /app/assets/config.json
 /checkout*.bat
 /app/autoBuild
