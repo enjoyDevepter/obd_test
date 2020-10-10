@@ -14,6 +14,7 @@
 # Ignore gradle files
 /.gradle
 /build
+/release
 
 # generated files
 /bin
@@ -27,7 +28,6 @@
 
 # Ignore app file
 /app/build
-/app/release
 /app/assets/config.json
 /checkout*.bat
 /app/autoBuild
