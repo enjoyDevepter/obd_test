@@ -943,7 +943,8 @@ public class BlueManager {
                                 } else {
                                     f = true;
                                 }
-                                if (0 == content[26]) {
+                                temp = byteToShort(new byte[]{content[26], content[27]}) & 0xFFFF;
+                                if (temp <= 20) {
                                     message.what = MSG_ADC_ERROR;
                                 } else {
                                     g = true;
