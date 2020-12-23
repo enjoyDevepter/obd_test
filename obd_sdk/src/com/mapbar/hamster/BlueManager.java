@@ -672,7 +672,7 @@ public class BlueManager {
                     // 三期新需求，优先判断是否选择车型
                     if (content[1] == 02) {
                         obdStatusInfo.setNews(true);
-                        obdStatusInfo.setHudType(content[68]);
+                        obdStatusInfo.setHudType(content[68] & 0xff);
                         obdStatusInfo.setSupportNavi(content[69] == 1);
                         obdStatusInfo.setSupportFM(content[70] == 1);
                     }

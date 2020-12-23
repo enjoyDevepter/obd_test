@@ -186,7 +186,7 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
                 GlobalUtil.getHandler().post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(GlobalUtil.getContext(), "网络异常！", 0).show();
+                        Toast.makeText(GlobalUtil.getContext(), "网络异常！", Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -395,6 +395,15 @@ public class ResetPage extends AppBasePage implements View.OnClickListener, BleC
                                     type = "P7_未定义";
                                 }
                                 break;
+                            case 0x62:
+                            case 0x52:
+                                if (!supportTire && !supportCheck && !supportFM){
+                                    type = "C2-基础版";
+                                } else if (!supportTire && supportCheck && supportFM){
+                                    type = "C2-FM版";
+                                } else {
+                                    type = "C2_未定义";
+                                }
                         }
                         typeTV.setText(type);
 
