@@ -23,7 +23,12 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import org.simple.eventbus.EventBus;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.listener.ResponseErrorListener;
@@ -131,8 +136,6 @@ public class MainActivity extends AppCompatActivity implements BleCallBackListen
 
             }
         }).build());
-
-
     }
 
     @Override
