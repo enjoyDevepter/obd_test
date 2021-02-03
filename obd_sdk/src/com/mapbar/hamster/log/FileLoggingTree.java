@@ -21,11 +21,16 @@ public class FileLoggingTree extends Timber.Tree {
 
     public FileLoggingTree(String filePath) {
         File dir = new File(filePath);
-        while (null != dir.listFiles() && dir.listFiles().length > 4) {
+        while (null != dir.listFiles() && dir.listFiles().length > 5) {
             File[] files = dir.listFiles();
-            File deleteFile = files[0];
-            for (int i = 1; i < files.length; i++) {
-                if (deleteFile.lastModified() > files[i].lastModified()) {
+            File deleteFile = null;
+            if (files[0].getName().equals("rssi.txt")) {
+                deleteFile = files[1];
+            } else {
+                deleteFile = files[0];
+            }
+            for (int i = 0; i < files.length; i++) {
+                if (deleteFile != files[i] && deleteFile.lastModified() > files[i].lastModified() && !files[i].getName().equals("rssi.txt")) {
                     deleteFile = files[i];
                 }
             }

@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
@@ -26,6 +27,9 @@ import com.mapbar.hamster.core.HexUtils;
 import com.mapbar.hamster.core.ProtocolUtils;
 import com.mapbar.hamster.log.Log;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -114,8 +118,10 @@ public class BlueManager {
     private HandlerThread mWorkerThread;
     private Handler mHandler;
     private int connectStatus;
+    private int rssi = -70;
     private boolean isScaning = false;
     private volatile boolean canGo = true;
+    private int maxRssi = Integer.MIN_VALUE;
     private ArrayList<String> scanResult = new ArrayList<>();
     private ArrayList<BleCallBackListener> callBackListeners = new ArrayList<>();
     private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
@@ -135,7 +141,8 @@ public class BlueManager {
                 return;
             }
             scanResult.add(name);
-            if ((name != null && name.toUpperCase().startsWith("MYOBD")) || (name != null && name.toUpperCase().startsWith("GUARDIAN"))) {
+            maxRssi = Math.max(maxRssi, rssi);
+            if (name != null && (name.toUpperCase().startsWith("MYOBD") || name.toUpperCase().startsWith("GUARDIAN")) && rssi >= BlueManager.this.rssi) {
                 Log.d("device.getName()=    " + device.getName() + " device.getAddress()=" + device.getAddress());
                 Message msg = mHandler.obtainMessage();
                 msg.what = STOP_SCAN_AND_CONNECT;
@@ -144,6 +151,24 @@ public class BlueManager {
             }
         }
     };
+
+    private int getMinRssi() {
+        File file = new File(Environment.getExternalStorageDirectory().getPath() + File.separator + "obd_test" + File.separator + "rssi.txt");
+        if (!file.exists()) {
+            rssi = -70;
+        }
+        try {
+            BufferedReader bfr = new BufferedReader(new FileReader(file));
+            rssi = Integer.valueOf(bfr.readLine());
+            Log.d("  rssi " + rssi);
+            bfr.close();
+        } catch (Exception e) {
+            Log.d(file.getPath() + "   FileNotFoundException " + e.getMessage());
+            rssi = -70;
+        }
+        return rssi;
+    }
+
     private volatile boolean split;
     private byte[] mData;
     private int mCount = 20;
@@ -338,17 +363,19 @@ public class BlueManager {
         mWorkerThread.start();
         mHandler = new WorkerHandler(mWorkerThread.getLooper());
 
-        startScan();
     }
 
     public synchronized void startScan() {
         if (null == mBluetoothAdapter || isScaning) {
             return;
         }
+        rssi = getMinRssi();
+
         if (!mBluetoothAdapter.isEnabled()) {
             mBluetoothAdapter.enable();
         }
 
+        maxRssi = Integer.MIN_VALUE;
         isScaning = true;
 
         scanResult.clear();
@@ -369,7 +396,8 @@ public class BlueManager {
             return;
         }
         isScaning = false;
-        notifyBleCallBackListener(OBDEvent.BLUE_SCAN_FINISHED, find);
+        String msg = "当前搜索到的最大RSSI值为:" + maxRssi + " 小于设定RSSI最小值：" + rssi;
+        notifyBleCallBackListener(OBDEvent.BLUE_SCAN_FINISHED, new Fail(find, msg));
         mBluetoothAdapter.stopLeScan(leScanCallback);
     }
 

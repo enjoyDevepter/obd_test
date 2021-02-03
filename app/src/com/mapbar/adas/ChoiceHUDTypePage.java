@@ -53,7 +53,6 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
         auto = AdasApplication.currentHUDItem != null;
         Log.d("auto  " + auto);
         if (auto) {
-            currentHUDItem = AdasApplication.currentHUDItem;
             BlueManager.getInstance().send(ProtocolUtils.choiceHUD(AdasApplication.currentHUDItem.getType()));
         }
 
@@ -117,7 +116,7 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
                     return;
                 }
                 AdasApplication.count = Integer.valueOf(count);
-                BlueManager.getInstance().send(ProtocolUtils.choiceHUD(currentHUDItem.getType()));
+                BlueManager.getInstance().send(ProtocolUtils.choiceHUD(AdasApplication.currentHUDItem.getType()));
                 break;
             default:
                 break;
@@ -128,10 +127,12 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
     public void onEvent(int event, Object data) {
         switch (event) {
             case OBDEvent.CHOICE_HUD_TYPE:
-                if (currentHUDItem.getType() == (Integer) data) {
-                    AdasApplication.currentHUDItem = currentHUDItem;
+                if (AdasApplication.currentHUDItem.getType() == (Integer) data && AdasApplication.count > 0) {
                     // 开始测试
                     PageManager.go(new HUDTestPage());
+                } else if (AdasApplication.currentHUDItem.getType() == (Integer) data && AdasApplication.count <= 0) {
+                    AdasApplication.currentHUDItem = null;
+                    Toast.makeText(GlobalUtil.getContext(), "已完成！请重新输入待出厂盒子个数!", Toast.LENGTH_LONG).show();
                 } else {
                     // 重置
                     Toast.makeText(ChoiceHUDTypePage.this.getContext(), "设置异常，请重新选择！", Toast.LENGTH_LONG).show();
@@ -153,8 +154,6 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
         }
     }
 
-    HUDInfo.HUDItem currentHUDItem;
-
     @Override
     public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
         HUDInfo hudInfo = (HUDInfo) hudTypeExpandableListAdapter.getGroup(groupPosition);
@@ -165,9 +164,18 @@ public class ChoiceHUDTypePage extends AppBasePage implements View.OnClickListen
                 item.setChoice(false);
             }
         }
-        currentHUDItem = hudItem;
+        AdasApplication.currentHUDItem = new HUDInfo.HUDItem();
+        convert(AdasApplication.currentHUDItem, hudItem);
         hudTypeExpandableListAdapter.notifyDataSetChanged();
         nextV.setVisibility(View.VISIBLE);
         return true;
+    }
+
+    private void convert(HUDInfo.HUDItem origin, HUDInfo.HUDItem source) {
+        origin.setName(source.getName());
+        origin.setChoice(source.isChoice());
+        origin.setSupportOBD(source.isSupportOBD());
+        origin.setSupportTire(source.isSupportTire());
+        origin.setType(source.getType());
     }
 }

@@ -1,7 +1,6 @@
 package com.mapbar.adas;
 
 import android.graphics.drawable.AnimationDrawable;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
@@ -9,6 +8,7 @@ import com.mapbar.adas.anno.PageSetting;
 import com.mapbar.adas.anno.ViewInject;
 import com.mapbar.hamster.BleCallBackListener;
 import com.mapbar.hamster.BlueManager;
+import com.mapbar.hamster.Fail;
 import com.mapbar.hamster.OBDEvent;
 import com.mapbar.hamster.log.Log;
 import com.miyuan.obd.R;
@@ -26,6 +26,8 @@ public class ConnectPage extends AppBasePage implements View.OnClickListener, Bl
     private View reportV;
     @ViewInject(R.id.retry)
     private View retry;
+    @ViewInject(R.id.errorInfo)
+    private TextView errorInfoTV;
     private AnimationDrawable animationDrawable;
 
     @Override
@@ -77,12 +79,15 @@ public class ConnectPage extends AppBasePage implements View.OnClickListener, Bl
         switch (event) {
             case OBDEvent.BLUE_SCAN_FINISHED:
                 Log.d("OBDEvent.BLUE_SCAN_FINISHED " + data);
-                if (!(boolean) data) {
+                final Fail fail = (Fail) data;
+                if (!fail.isFind()) {
                     GlobalUtil.getHandler().post(new Runnable() {
                         @Override
                         public void run() {
                             animationDrawable.stop();
                             retry.setClickable(true);
+                            errorInfoTV.setVisibility(View.VISIBLE);
+                            errorInfoTV.setText(fail.getMsg());
                             retry.setVisibility(View.VISIBLE);
                         }
                     });
