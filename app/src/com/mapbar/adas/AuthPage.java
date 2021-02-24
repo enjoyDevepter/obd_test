@@ -265,6 +265,12 @@ public class AuthPage extends AppBasePage implements View.OnClickListener, BleCa
     public void onEvent(int event, Object data) {
         switch (event) {
             case OBDEvent.UNREGISTERED://未注册
+                GlobalUtil.getHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        AlarmManager.getInstance().play(R.raw.warm);
+                    }
+                });
                 break;
             case OBDEvent.AUTHORIZATION: //未授权或者授权过期
                 break;
@@ -272,6 +278,13 @@ public class AuthPage extends AppBasePage implements View.OnClickListener, BleCa
                 activateSuccess();
                 break;
             case OBDEvent.AUTHORIZATION_FAIL:
+                GlobalUtil.getHandler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        AlarmManager.getInstance().play(R.raw.warm);
+                    }
+                });
+                break;
             case OBDEvent.NO_PARAM: // 无参数
                 break;
             default:
